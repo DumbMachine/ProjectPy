@@ -1,5 +1,5 @@
 import argparse
-# from . import utils
+from . import utils
 import sys
 
 def options():
@@ -11,7 +11,7 @@ def options():
                                 description="projectpy - A create-python-package CLI")
 
     ap.add_argument("-l", "--license", required=True, help="choice of LICENSE")
-    ap.add_argument("-re", "--requirements.txt", required=False, nargs='+', help="choice of LICENSE")
+    ap.add_argument("-re", "--requirements.txt", required=False, nargs='+', help="choice of requirements.txt")
 
 
     return vars(ap.parse_args())
