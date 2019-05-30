@@ -5,12 +5,16 @@ from pathlib import Path
 
 from setuptools import find_packages, setup
 
-home = str(Path.home())
-app_data = ".create-python-package"
-if os.path.exists(os.path.join(home,app_data)):
-    os.system("rm -r {}".format(os.path.join(home,app_data)))
-else:
-    os.makedirs(os.path.join(home,app_data))
+# home = str(Path.home())
+# app_data = ".create-python-package"
+# if os.path.exists(os.path.join(home,app_data)):
+#     os.system("rm -r {}".format(os.path.join(home,app_data)))
+# else:
+#     os.makedirs(os.path.join(home,app_data))
+
+files = ["template/*"]
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
 
 def get_version():
     g = {}
@@ -20,6 +24,7 @@ def get_version():
 
 setup(name="projectpy",
       version=get_version(),
+      install_requires=required,
       packages=find_packages(
                                 # exclude=["tests"]
                                 ),
@@ -67,9 +72,8 @@ setup(name="projectpy",
 		],
 	},
     platforms="Any",
-      package_data={
-            'projectpy.template': ['*'],     # All files from folder A
-        },
+    package_data = {'projectpy' : files },
+
         # package_data = {
     #     'Potato': ['*.txt']
     # },

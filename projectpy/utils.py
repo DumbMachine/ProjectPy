@@ -4,7 +4,7 @@ init(autoreset=True)
 def cprint(something, somethingelse, somethingelsesomething, heading = False, normal = False):
     if normal:
         print()
-        print(f"{Fore.YELLOW+something}{somethingelse}{somethingelsesomething}")
+        print(Fore.YELLOW+f"{something}{somethingelse}{somethingelsesomething}")
         print()
         return
     
