@@ -12,26 +12,6 @@ if os.path.exists(os.path.join(home,app_data)):
 else:
     os.makedirs(os.path.join(home,app_data))
 
-# class PostDevelopCommand(develop):
-#     """Post-installation for development mode."""
-#     def run(self):
-#         # PUT YOUR POST-INSTALL SCRIPT HERE or CALL A FUNCTION
-#         print('\n\n\n\n\n\\n\n\n=====================================================================')
-#         os.system('cp  -rf ./template ~/.create-python-package')
-#         develop.run(self)
-
-# class PostInstallCommand(install):
-#     """Post-installation for installation mode."""
-#     def run(self):
-#         # PUT YOUR POST-INSTALL SCRIPT HERE or CALL A FUNCTION
-#         print('\n\n\n\n\n\\n\n\n=====================================================================')
-#         os.system('cp  -rf ./template ~/.create-python-package')
-#         install.run(self)
-
-# if platform.system().lower() == 'linux':
-# elif platform.system().lower() == 'windows':
-    # os.system('copy source.txt destination.txt')  
-
 def get_version():
     g = {}
     exec(open(os.path.join("projectpy", "version.py")).read(), g)
@@ -40,8 +20,10 @@ def get_version():
 
 setup(name="projectpy",
       version=get_version(),
-      packages=find_packages(exclude=["tests"]),
-      # packages=['projectpy'],
+      packages=find_packages(
+                                # exclude=["tests"]
+                                ),
+    #   packages=['projectpy','tests'],
       scripts=[],
       description="CLI tool to create-python-packages",
       long_description="Longer Desciption of the sample plcakge folder",
@@ -84,9 +66,14 @@ setup(name="projectpy",
 			'projectpy = projectpy.cli:run_as_command',
 		],
 	},
-      platforms="Any",
-    #   cmdclass={
-    #     'develop': PostDevelopCommand,
-    #     'install': PostInstallCommand,
+    platforms="Any",
+      package_data={
+            'projectpy.template': ['*'],     # All files from folder A
+        },
+        # package_data = {
+    #     'Potato': ['*.txt']
     # },
-      )
+# data_files=[
+#         ('./data', ['./projectpy/template/config.py'])
+#         ]
+)
