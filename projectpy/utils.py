@@ -1,8 +1,13 @@
 from colorama import init, Fore, Back, Style
 init(autoreset=True)
 
-def cprint(something, somethingelse, somethingelsesomething, heading = False):
-    # print()
+def cprint(something, somethingelse, somethingelsesomething, heading = False, normal = False):
+    if normal:
+        print()
+        print(f"{Fore.YELLOW+something}{somethingelse}{somethingelsesomething}")
+        print()
+        return
+    
     if heading:
         print()
         print(Fore.BLUE+"%s"% ("||"), end="")
@@ -15,6 +20,8 @@ def cprint(something, somethingelse, somethingelsesomething, heading = False):
         print(Fore.RED+"%18s"% (somethingelsesomething), end="")
         print(Fore.BLUE+"%18s"% ("||"), end="\n")
         print("--------------------------------------------------------------------------")
+        return
+        
     else:
         print(Fore.BLUE+"%s"% ("||"), end="")
 
@@ -24,3 +31,4 @@ def cprint(something, somethingelse, somethingelsesomething, heading = False):
         print("%18s"% (somethingelsesomething), end="")
         print(Fore.BLUE+"%18s"% ("||"), end="\n")
         print("--------------------------------------------------------------------------")
+        return
