@@ -3,6 +3,7 @@ import os
 import sys
 
 from . import config, utils
+import site
 
 
 def options():
@@ -14,8 +15,8 @@ def options():
                                 description="projectpy - A create-python-package CLI")
 
     ap.add_argument("-n", "--name", required=True, help="Name of the project")
-    ap.add_argument("-us", "--username", required=False, help="Github Username", default=)
-    ap.add_argument("-ue", "--usermail", required=False, help="Email of the User", default='Placeholder username')
+    ap.add_argument("-us", "--username", required=False, help="Github Username", default=" username")
+    ap.add_argument("-ue", "--usermail", required=False, help="Email of the User", default=' usermail')
     
     ap.add_argument("-l", "--license", required=False, help="choice of LICENSE", default='unilicense')
     ap.add_argument("-ig", "--gitignore", required=False, help='Language Choice for gitignore', default=True)
@@ -42,8 +43,10 @@ def options():
 
     ap.add_argument("-req", "--requirements", required=False, help="Reqruiements to text", default=True)
         
+    ap.add_argument("-clr", "--clear", required=False, help="Delete the folder, if similar exists", default=False)
 
-    return ap.parse_args()
+
+    return vars(ap.parse_args())
 
 
 def initialize(args):
@@ -68,12 +71,18 @@ def initialize(args):
     conf.license = args.license
     conf.gitignore = args.gitignore
     conf.contributing = args.contributing
+    conf.clear = args.clear
+    return conf
 
 def main():
     args = options()
-    # print(args)
-    # os.makedirs(os.path.join(os.getcwd(),args['name']))
-    # utils.copy_files('./template/', args['name'])
+    if os.path.exists(os.path.join(os.getcwd(),args['name'])):
+        raise FileExistsError("The file exitsts already. Pass -clr, if you want to delete that folder")
+    else:
+        os.makedirs(os.path.join(os.getcwd(), args['name']))
+        
+    # ! Compying the contents of template to Target
+    utils.copy_files(os.path.join(site.getsitepackages()[0],'projectpy/template'), args['name'])
     # os.system(f'echo "GAYSHIT" >> ./{args['name']}/something.txt')
     utils.cprint("TICK", "Option", "Choice", heading=True)
     for key in args.keys():
