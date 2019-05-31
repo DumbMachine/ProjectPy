@@ -1,11 +1,15 @@
 import argparse
 import os
+import site
 import sys
 
-from . import config, utils
-import site
-
 from colorama import Fore, init
+
+from . import config, utils
+
+from distutils.sysconfig import get_python_lib
+
+
 
 init(autoreset=True)
 
@@ -33,7 +37,7 @@ def options():
 
     ap.add_argument("-con", "--config", required=False, help="Display the Default Config", default=True)
 
-    ap.add_argument("-noc", "--color", required=False, help="Do not emit color codes in output", default=False)
+    ap.add_argument("-noc", "--color", required=False, help="Toggle Colors on the print", default=True)
         
     ap.add_argument("-clr", "--clean", required=False, help="Delete the folder, if similar exists", default=False)
     
@@ -73,15 +77,21 @@ def main():
         os.makedirs(os.path.join(os.getcwd(), args['name']))
         
     # ! Compying the contents of template to Target
-    from distutils.sysconfig import get_python_lib
+    try:
+        import site
+        print(1)
+        base = site.getsitepackages()[0]
+    except:
+        print(2)
+        base = get_python_lib()
     files_to_copy = utils.files()
     for file in files_to_copy:
-        location = os.path.join(get_python_lib(),'projectpy/template',file)
+        location = os.path.join(base,'projectpy/template',file)
         utils.copy_files(location,  args['name'])
     # utils.copy_files(os.path.join(get_python_lib(),'projectpy/template'), args['name'])
-    # utils.cprint("TICK", "Option", "Choice", heading=True)
-    # for key in args.keys():
-    #     utils.cprint('[INFO]',key, args[key])
+    utils.cprint("TICK", "Option", "Choice", heading=True)
+    for key in args.keys():
+        utils.cprint('[INFO]',key, args[key])
 
     # print()
     # conf = initialize(options())

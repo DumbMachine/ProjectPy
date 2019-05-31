@@ -8,11 +8,11 @@ with open('requirements.txt') as f:
 
 def get_version():
     g = {}
-    exec(open(os.path.join("projectpy", "version.py")).read(), g)
+    exec(open(os.path.join("{TEMPLATE}", "version.py")).read(), g)
     return g["__version__"]
 
 
-setup(name="projectpy",
+setup(name="{TEMPLATE}",
       version="0.01",
       install_requires=required,
       packages=find_packages(exclude=["tests"]),
@@ -27,9 +27,6 @@ setup(name="projectpy",
       download_url="https://github.com/{AUTHOR}/repo/releases",
       license="unlicensed",
       test_suite="tests",
-      # install_requires = ["<package-name>=1.13.1"],
-      # setup_requires = ["pytest-runner"],
-      # tests_require = ["pytest"],
       classifiers=[
           "Development Status :: 1 - Planning",
           # "Development Status :: 2 - Pre-Alpha",
@@ -54,5 +51,5 @@ setup(name="projectpy",
           "Topic :: Utilities",
       ],
 	},
-    platforms="Any",
+    platforms="Any"
 )

@@ -44,11 +44,11 @@ def copy_files(frem, to):
     return os.system("cp -rf %s %s"%(frem, to))
 
 
-def files(custom=False):
+def files(no_custom=False):
     '''
     .gitignore files
     '''
-    if not custom:
+    if not no_custom:
         return ['setup.py', 'setup.cfg', 'requirements.txt', 'README.md', 'LICENSE', '.gitignore',
                 'optional/.travis.yml', 'optional/MANIFEST.ini', 'optional/appveyor.yml',
                 'optional/.codecoveragerc', 'optional/dockerfile', 'optional/.codeclimate.yml']
