@@ -1,0 +1,2 @@
+def printer():
+    return "Simple function inside of temp.py"

@@ -1,18 +1,24 @@
 import os
 # import os.path
 import platform
+from os import listdir
+from os.path import isfile, join
 from pathlib import Path
 
 from setuptools import find_packages, setup
 
-# home = str(Path.home())
-# app_data = ".create-python-package"
-# if os.path.exists(os.path.join(home,app_data)):
-#     os.system("rm -r {}".format(os.path.join(home,app_data)))
-# else:
-#     os.makedirs(os.path.join(home,app_data))
 
-files = ["template/*"]
+# ? To Copy the Template Data
+temp = [f for f in os.walk('./projectpy/template/')]
+files = []
+for tempy in temp:
+    base = tempy[0]
+    for somethingelse in tempy[1:]:
+        for something in somethingelse[1:]:
+            files.append(os.path.join(tempy[0],something))
+files = [file.replace('./projectpy/','./') for file in files]
+
+
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
@@ -25,10 +31,7 @@ def get_version():
 setup(name="projectpy",
       version=get_version(),
       install_requires=required,
-      packages=find_packages(
-                                # exclude=["tests"]
-                                ),
-    #   packages=['projectpy','tests'],
+      packages=find_packages(exclude=["tests"]),
       scripts=[],
       description="CLI tool to create-python-packages",
       long_description="Longer Desciption of the sample plcakge folder",
@@ -73,11 +76,4 @@ setup(name="projectpy",
 	},
     platforms="Any",
     package_data = {'projectpy' : files },
-
-        # package_data = {
-    #     'Potato': ['*.txt']
-    # },
-# data_files=[
-#         ('./data', ['./projectpy/template/config.py'])
-#         ]
 )

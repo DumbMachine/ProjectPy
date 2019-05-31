@@ -32,3 +32,7 @@ def cprint(something, somethingelse, somethingelsesomething, heading = False, no
         print(Fore.BLUE+"%18s"% ("||"), end="\n")
         print("--------------------------------------------------------------------------")
         return
+    
+def copy_files(frem, to):
+    import os
+    return os.system(f"cp -rf {frem} {to}")
