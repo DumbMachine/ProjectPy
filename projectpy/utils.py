@@ -1,10 +1,14 @@
+from __future__ import print_function
+
+import sys
 from colorama import init, Fore, Back, Style
 init(autoreset=True)
+
 
 def cprint(something, somethingelse, somethingelsesomething, heading = False, normal = False):
     if normal:
         print()
-        print(Fore.YELLOW+f"{something}{somethingelse}{somethingelsesomething}")
+        print(Fore.YELLOW+"%s%s%s" %(something, somethingelse, somethingelsesomething))
         print()
         return
     
@@ -35,4 +39,4 @@ def cprint(something, somethingelse, somethingelsesomething, heading = False, no
     
 def copy_files(frem, to):
     import os
-    return os.system(f"cp -rf {frem} {to}")
+    return os.system("cp -rf %s %s"%(frem, to))

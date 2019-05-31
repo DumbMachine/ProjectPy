@@ -82,7 +82,8 @@ def main():
         os.makedirs(os.path.join(os.getcwd(), args['name']))
         
     # ! Compying the contents of template to Target
-    utils.copy_files(os.path.join(site.getsitepackages()[0],'projectpy/template'), args['name'])
+    from distutils.sysconfig import get_python_lib
+    utils.copy_files(os.path.join(get_python_lib(),'projectpy/template'), args['name'])
     utils.cprint("TICK", "Option", "Choice", heading=True)
     for key in args.keys():
         utils.cprint('[INFO]',key, args[key])

@@ -1,12 +1,7 @@
 import os
-# import os.path
 import platform
-from os import listdir
-from os.path import isfile, join
-from pathlib import Path
 
 from setuptools import find_packages, setup
-
 
 # ? To Copy the Template Data
 temp = [f for f in os.walk('./projectpy/template/')]
@@ -50,7 +45,7 @@ setup(name="projectpy",
           "Development Status :: 1 - Planning",
           # "Development Status :: 2 - Pre-Alpha",
           # "Development Status :: 3 - Alpha",
-          #     "Development Status :: 4 - Beta",
+        #   "Development Status :: 4 - Beta",
           # "Development Status :: 5 - Production/Stable",
           # "Development Status :: 6 - Mature",
           "Intended Audience :: Developers",
