@@ -83,7 +83,6 @@ def main():
         
     # ! Compying the contents of template to Target
     utils.copy_files(os.path.join(site.getsitepackages()[0],'projectpy/template'), args['name'])
-    # os.system(f'echo "GAYSHIT" >> ./{args['name']}/something.txt')
     utils.cprint("TICK", "Option", "Choice", heading=True)
     for key in args.keys():
         utils.cprint('[INFO]',key, args[key])
