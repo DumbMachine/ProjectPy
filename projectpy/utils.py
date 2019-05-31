@@ -1,7 +1,9 @@
 from __future__ import print_function
 
 import sys
-from colorama import init, Fore, Back, Style
+
+from colorama import Back, Fore, Style, init
+
 init(autoreset=True)
 
 
@@ -40,3 +42,20 @@ def cprint(something, somethingelse, somethingelsesomething, heading = False, no
 def copy_files(frem, to):
     import os
     return os.system("cp -rf %s %s"%(frem, to))
+
+
+def files(custom=False):
+    '''
+    .gitignore files
+    '''
+    if not custom:
+        return ['setup.py', 'setup.cfg', 'requirements.txt', 'README.md', 'LICENSE', '.gitignore',
+                'optional/.travis.yml', 'optional/MANIFEST.ini', 'optional/appveyor.yml',
+                'optional/.codecoveragerc', 'optional/dockerfile', 'optional/.codeclimate.yml']
+    
+    return ['setup.py', 'setup.cfg', 'requirements.txt', 'README.md', 'LICENSE', '.gitignore']
+
+    
+
+# def files_to_copy(files):
+#     for file in files:

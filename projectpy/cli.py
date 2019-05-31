@@ -5,6 +5,9 @@ import sys
 from . import config, utils
 import site
 
+from colorama import Fore, init
+
+init(autoreset=True)
 
 def options():
     '''
@@ -18,13 +21,8 @@ def options():
     ap.add_argument("-us", "--username", required=False, help="Github Username", default=" username")
     ap.add_argument("-ue", "--usermail", required=False, help="Email of the User", default=' usermail')
     
-    ap.add_argument("-l", "--license", required=False, help="choice of LICENSE", default='unilicense')
-    ap.add_argument("-ig", "--gitignore", required=False, help='Language Choice for gitignore', default=True)
-
-    ap.add_argument("-re", "--readme", required=False, help="Language Choice for gitignore", default=True)
-
-    ap.add_argument("-co", "--contributing", required=False, help="Is contributing.rst required", default=False)
-
+    ap.add_argument("-c", "--custom", required=False, help="Take the customs we provide", default='unilicense')
+    
     ap.add_argument("-ci", "--cintergrations", required=False,
                     help='''Choice of the Continuous Integration\n
                     {
@@ -33,17 +31,13 @@ def options():
                         "jenkins": For the choice of using Jenkins
                             }''', default='travis')
 
-    ap.add_argument("-mi", "--manifest", required=False, help="Choice for the Manifest File", default=True)
+    ap.add_argument("-con", "--config", required=False, help="Display the Default Config", default=True)
 
-    ap.add_argument("-d", "--docker", required=False, help="Choice for basic docker configuration with Alphine", default=True)
-
-    ap.add_argument("-c", "--config", required=False, help="Display the Default Config", default=True)
-
-    ap.add_argument("-noc", "--no-color", required=False, help="Do not emit color codes in output", default=False)
-
-    ap.add_argument("-req", "--requirements", required=False, help="Reqruiements to text", default=True)
+    ap.add_argument("-noc", "--color", required=False, help="Do not emit color codes in output", default=False)
         
-    ap.add_argument("-clr", "--clear", required=False, help="Delete the folder, if similar exists", default=False)
+    ap.add_argument("-clr", "--clean", required=False, help="Delete the folder, if similar exists", default=False)
+    
+    ap.add_argument("-custom", "--git", required=False, help="Delete the folder, if similar exists", default=False)
 
 
     return vars(ap.parse_args())
@@ -61,35 +55,46 @@ def initialize(args):
     conf.username = args.username
     conf.usermail = args.usermail
     
-    conf.git = args.git
     conf.docker = args.docker
     conf.color = args.color
-    conf.requirements = args.requirements
-    conf.manifest = args.manifest
     conf.ci = args.cintergrations
-    conf.readme = args.readme
     conf.license = args.license
-    conf.gitignore = args.gitignore
-    conf.contributing = args.contributing
     conf.clear = args.clear
     return conf
 
 def main():
     args = options()
+    # print(Fore.GREEN,args)
+    
     if os.path.exists(os.path.join(os.getcwd(),args['name'])):
-        raise FileExistsError("The file exitsts already. Pass -clr, if you want to delete that folder")
+        raise FileExistsError((Fore.RED + "The file exitsts already. Pass -clr, if you want to delete that folder"))            
+        
     else:
         os.makedirs(os.path.join(os.getcwd(), args['name']))
         
     # ! Compying the contents of template to Target
     from distutils.sysconfig import get_python_lib
-    utils.copy_files(os.path.join(get_python_lib(),'projectpy/template'), args['name'])
-    utils.cprint("TICK", "Option", "Choice", heading=True)
-    for key in args.keys():
-        utils.cprint('[INFO]',key, args[key])
+    files_to_copy = utils.files()
+    for file in files_to_copy:
+        location = os.path.join(get_python_lib(),'projectpy/template',file)
+        utils.copy_files(location,  args['name'])
+    # utils.copy_files(os.path.join(get_python_lib(),'projectpy/template'), args['name'])
+    # utils.cprint("TICK", "Option", "Choice", heading=True)
+    # for key in args.keys():
+    #     utils.cprint('[INFO]',key, args[key])
 
-    print()
+    # print()
+    # conf = initialize(options())
+    
+    # if conf.usermail == True:
+    #     conf.git = True
+    
 
+
+def parser(conf):
+    pass
+    #username
+    
 
 def run_as_command():
     main()
