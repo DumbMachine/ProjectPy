@@ -6,11 +6,6 @@ from setuptools import find_packages, setup
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
-def get_version():
-    g = {}
-    exec(open(os.path.join("template", "version.py")).read(), g)
-    return g["__version__"]
-
 setup(name="template",
       version="0.01",
       install_requires=required,
@@ -28,8 +23,8 @@ setup(name="template",
       test_suite="tests",
       classifiers=[
         #   "Development Status :: 1 - Planning",
-          # "Development Status :: 2 - Pre-Alpha",
-          "Development Status :: 3 - Alpha",
+          "Development Status :: 2 - Pre-Alpha",
+        #   "Development Status :: 3 - Alpha",
         #   "Development Status :: 4 - Beta",
           # "Development Status :: 5 - Production/Stable",
           # "Development Status :: 6 - Mature",
@@ -49,10 +44,5 @@ setup(name="template",
           "Topic :: Software Development",
           "Topic :: Utilities",
       ],
-      	entry_points={
-		'console_scripts':[
-			'projectpy = projectpy.cli:run_as_command',
-		],
-	},
     platforms="Any",
 )

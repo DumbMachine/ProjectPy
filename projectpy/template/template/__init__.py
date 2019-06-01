@@ -1,3 +1,3 @@
 from . import temp
 
-temp.printer()
+print(temp.printer())

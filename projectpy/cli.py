@@ -2,6 +2,7 @@ import argparse
 import os
 import site
 import sys
+import textwrap
 import time
 from distutils.sysconfig import get_python_lib
 
@@ -15,15 +16,21 @@ def options():
     '''
     Parsing the Arguments here
     '''
-    ap = argparse.ArgumentParser(prog="projectpy",
-                                usage="%(prog)s [options]",
-                                description="projectpy - A create-python-package CLI")
+    ap = argparse.ArgumentParser(   prog="projectpy",
+                                    usage="%(prog)s [options]",
+                                    formatter_class=argparse.RawDescriptionHelpFormatter,
+                                    description=textwrap.dedent(
+                                    '''PROJECTPY
+                                       =========================
+                                       - A create-python-package CLI
+                                       =========================
+                                       '''))
 
     ap.add_argument("-n", "--name", required=True, help="Name of the project")
     ap.add_argument("-us", "--username", required=False, help="Github Username", default=" username")
     ap.add_argument("-ue", "--usermail", required=False, help="Email of the User", default=' usermail')
     
-    ap.add_argument("-c", "--custom", required=False, help="Take the customs we provide", default='unilicense')
+    ap.add_argument("-c", "--custom", required=False, help="Take the customs we provide", default='True')
     
     ap.add_argument("-ci", "--cintergrations", required=False,
                     help='''Choice of the Continuous Integration\n
@@ -35,9 +42,9 @@ def options():
 
     ap.add_argument("-con", "--config", required=False, help="Display the Default Config", default=True)
 
-    ap.add_argument("-noc", "--color", required=False, help="Toggle Colors on the print", default=True)
+    ap.add_argument("-col", "--color", required=False, help="Toggle Colors on the print", default=True)
         
-    ap.add_argument("-clr", "--clean", required=False, help="Delete the folder, if similar exists", default=False)
+    ap.add_argument("-clr", "--clean", required=False, help="Delete folder with same name if it exits", default=False)
     
     ap.add_argument("-custom", "--git", required=False, help="Delete the folder, if similar exists", default=False)
 
@@ -77,21 +84,22 @@ def main():
     # ! Compying the contents of template to Target
     try:
         import site
-        print(1)
         base = site.getsitepackages()[0]
     except:
-        print(2)
         base = get_python_lib()
     files_to_copy = utils.files()
     i = 0
     for file in files_to_copy:
         location = os.path.join(base,'projectpy/template',file)
         utils.copy_files(location,  args['name'])
-        time.sleep(0.1)
-        utils.progressBar(i*10, len(files_to_copy)*10, "Copying file {}".format(file[:15]))
+        time.sleep(0.001)
+        utils.progressBar(i*len(files_to_copy), len(files_to_copy)*10, "Copying file {}".format(file[:15]))
         i+=1
         
-    # utils.copy_files(os.path.join(get_python_lib(),'projectpy/template'), args['name'])
+    print()
+    
+    print(utils.replacer(args['name']))
+    # utils.cprint(os.getcwd(),"","")
     utils.cprint("TICK", "Option", "Choice", heading=True)
     for key in args.keys():
         utils.cprint('[INFO]',key, args[key])
