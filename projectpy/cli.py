@@ -2,17 +2,15 @@ import argparse
 import os
 import site
 import sys
+import time
+from distutils.sysconfig import get_python_lib
 
 from colorama import Fore, init
 
 from . import config, utils
 
-from distutils.sysconfig import get_python_lib
-
-
-
 init(autoreset=True)
-
+1   
 def options():
     '''
     Parsing the Arguments here
@@ -85,9 +83,14 @@ def main():
         print(2)
         base = get_python_lib()
     files_to_copy = utils.files()
+    i = 0
     for file in files_to_copy:
         location = os.path.join(base,'projectpy/template',file)
         utils.copy_files(location,  args['name'])
+        time.sleep(0.1)
+        utils.progressBar(i*10, len(files_to_copy)*10, "Copying file {}".format(file[:15]))
+        i+=1
+        
     # utils.copy_files(os.path.join(get_python_lib(),'projectpy/template'), args['name'])
     utils.cprint("TICK", "Option", "Choice", heading=True)
     for key in args.keys():

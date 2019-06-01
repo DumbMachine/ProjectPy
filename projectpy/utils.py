@@ -49,13 +49,17 @@ def files(no_custom=False):
     .gitignore files
     '''
     if not no_custom:
-        return ['setup.py', 'setup.cfg', 'requirements.txt', 'README.md', 'LICENSE', '.gitignore',
+        return ['template', 'setup.py', 'setup.cfg', 'requirements.txt', 'README.md', 'LICENSE', '.gitignore',
                 'optional/.travis.yml', 'optional/MANIFEST.ini', 'optional/appveyor.yml',
                 'optional/.codecoveragerc', 'optional/dockerfile', 'optional/.codeclimate.yml']
     
-    return ['setup.py', 'setup.cfg', 'requirements.txt', 'README.md', 'LICENSE', '.gitignore']
+    return ['template', 'setup.py', 'setup.cfg', 'requirements.txt', 'README.md', 'LICENSE', '.gitignore']
 
-    
+def progressBar(value, endvalue, message, bar_length=20):
 
-# def files_to_copy(files):
-#     for file in files:
+        percent = float(value) / endvalue
+        arrow = '-' * int(round(percent * bar_length)-1) + '>'
+        spaces = ' ' * (bar_length - len(arrow))
+
+        sys.stdout.write("\rPercent: [{0}] {1}: {2} %".format(arrow + spaces, int(round(percent * 100)), message))
+        sys.stdout.flush()
