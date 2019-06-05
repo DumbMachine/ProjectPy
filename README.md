@@ -97,6 +97,7 @@ Out[1]: The Installation was Sucessful.
 ## Custom Installation:
 - This is the recommended was of using this CLI.
 - This method will supply your package repo with files for Services like Testing, Continuous Integration with Travis/Tox/Jenkins.
+```
 $ projectpy -n Example_Repo --config -ci travis -git --license unilicense
 
 PROJECTPY: A Python CLI to create packages
@@ -160,7 +161,7 @@ Example_Repo
 
 1 directory, 14 files
 ```
-# 🗒 T  ODO:
+# 🗒 TODO:
 - [ ] Add support for Logging.
 - [ ] Improve the CLI ( Add more colors )
 - [ ] Make examples for showing the thing.
