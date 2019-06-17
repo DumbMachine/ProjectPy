@@ -10,12 +10,13 @@ for tempy in temp:
     base = tempy[0]
     for somethingelse in tempy[1:]:
         for something in somethingelse[:]:
-            files.append(os.path.join(tempy[0],something))
-files = [file.replace('./projectpy/','./') for file in files]
+            files.append(os.path.join(tempy[0], something))
+files = [file.replace('./projectpy/', './') for file in files]
 
 
-with open('requirements.txt') as f:
+with open('./requirements.txt') as f:
     required = f.read().splitlines()
+
 
 def get_version():
     g = {}
@@ -42,10 +43,10 @@ setup(name="projectpy",
       # setup_requires = ["pytest-runner"],
       # tests_require = ["pytest"],
       classifiers=[
-        #   "Development Status :: 1 - Planning",
+          #   "Development Status :: 1 - Planning",
           # "Development Status :: 2 - Pre-Alpha",
           "Development Status :: 3 - Alpha",
-        #   "Development Status :: 4 - Beta",
+          #   "Development Status :: 4 - Beta",
           # "Development Status :: 5 - Production/Stable",
           # "Development Status :: 6 - Mature",
           "Intended Audience :: Developers",
@@ -64,11 +65,11 @@ setup(name="projectpy",
           "Topic :: Software Development",
           "Topic :: Utilities",
       ],
-      	entry_points={
-		'console_scripts':[
-			'projectpy = projectpy.cli:run_as_command',
-		],
-	},
-    platforms="Any",
-    package_data = {'projectpy' : files },
-)
+      entry_points={
+          'console_scripts': [
+              'projectpy = projectpy.cli:run_as_command',
+          ],
+      },
+      platforms="Any",
+      package_data={'projectpy': files},
+      )
