@@ -18,78 +18,62 @@ lis = ['build', 'codecov', 'analysis', 'chat', 'dependencies', 'size', 'download
 
 data = {
     'build': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'codecov': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'analysis': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'chat': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'dependencies': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'size': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'downloads': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'funding': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'issues': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'license': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'rating': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'social': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'version': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'platform': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'monitoring': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'activity': {
-        'name': [],
-        'link': []
+        'type': [],
     },
     'other': {
-        'name': [],
-        'link': []
+        'type': [],
     }
 }
 
 for count, item in enumerate(lis[:]):
     resp = r.get(base_url.format(item))
-    sys.stdout.write('\r Processing ({}/{}) : {}'.format(count + 1, len(lis), base_url.format(item)))
+    sys.stdout.write('\r Processing ({}/{}) : {}'.format(count +
+                                                         1, len(lis), base_url.format(item)))
     soup = BeautifulSoup(resp.text, 'lxml')
     shield_number = 1
     while shield_number:
@@ -98,9 +82,12 @@ for count, item in enumerate(lis[:]):
         if name == []:
             pass
         else:
-            data[item]['name'].append([
-                re.sub(regex_rm_tags, ' ', str(name[0])),
-                'https://img.shields.io' + re.sub(regex_rm_tags, ' ', str(link[0]))[1:]])
+            name = re.sub(regex_rm_tags, ' ', str(
+                name[0])).lower().replace(' ', '-')[1:-3]
+            data[item]['type'].append({
+                # 'name': re.sub(regex_rm_tags, ' ', str(name[0])).lower().replace(' ', '-')[1:-3],
+                f"{name}": 'https://img.shields.io' + re.sub(regex_rm_tags, ' ', str(link[0]))[1:-1]
+            })
         shield_number += 1
         if shield_number == 59:
             break
