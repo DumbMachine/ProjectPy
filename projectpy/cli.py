@@ -1,3 +1,5 @@
+from . import config, utils
+from colorama import Fore, init
 import argparse
 import os
 import site
@@ -5,10 +7,8 @@ import sys
 import textwrap
 import time
 from distutils.sysconfig import get_python_lib
-
-from colorama import Fore, init
-
-from . import config, utils
+from .writer import *
+import shutil
 
 init(autoreset=True)
 
@@ -54,7 +54,7 @@ def options():
         "--config",
         required=False,
         help="Location of the config.yaml/config.yml file",
-        default=True)
+        default=False)
 
     ap.add_argument(
         "-dis",
@@ -119,10 +119,10 @@ def initialize(args):
 
 def main():
     args = options()
-    print(f'OPTIONS {args}')
+    # print(f'OPTIONS {args}')
     # print(args['name'])
     # print(f'CONFIG {initialize(args)}')
-    print(Fore.GREEN, args)
+    # print(Fore.GREEN, args)
 
     # if os.path.exists(os.path.join(os.getcwd(), args['name'])):
     #     raise FileExistsError(
@@ -152,16 +152,56 @@ def main():
     # print()
 
     # print(utils.replacer(args['name']))
-    # utils.cprint(os.getcwd(),"","")
+    # utils.cprint(os.getcwd(), "", "")
     # utils.cprint("TICK", "Option", "Choice", heading=True)
     # for key in args.keys():
     #     utils.cprint('[INFO]', key, args[key])
 
-    # # print()
+    print("Creating the new folder")
+
+    action_taker(initialize(args))
+    print(initialize(args).license)
     # conf = initialize(options())
 
     # if conf.usermail == True:
     #     conf.git = True
+
+
+def action_taker(conf):
+    writers = ['git', 'setup_py', 'setup_cfg', 'requirements', 'license', 'readme', 'contributing',
+               'manifest', 'dockerfile', 'gitignore']
+    licenses = ['mit', 'agpl3', 'apache2', 'gnu2',
+                'gnugpl3', 'gpl3', 'lgpl3', 'mpl2', 'unilicense']
+
+    if conf.license.lower() in licenses:
+        print(f'License {conf.license}')
+    else:
+        raise NotImplementedError("This license is not yet implemented")
+
+    if os.path.exists(conf.config_location):
+        # the file is there
+        raise FileExistsError('A file with similar name exists')
+    elif os.access(os.path.dirname(conf.config_location), os.W_OK):
+        # the file does not exists but write privileges are given
+        pass
+    else:
+        # can not write there
+        raise PermissionError('Do not have the permission to Write here.')
+
+    if conf.clear_directory:
+        if os.path.exists(os.path.join('.', conf.project_name)):
+            # Delete
+            # os.rmdir(
+            #     os.path.join('.', conf.project_name)
+            # )
+            shutil.rmtree(
+                os.path.join('.', conf.project_name)
+            )
+        else:
+            # file doesn't exist. No need to bring in deletion.
+            pass
+    for writes in writers:
+        if conf.writes:
 
 
 def run_as_command():

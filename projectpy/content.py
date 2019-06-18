@@ -13,6 +13,42 @@ RUN python setup.py install
 
 CMD ["python -c "import {repo}"]'''
 
+    appveyor = '''environment:
+  matrix:
+  - TOXENV: py27
+  - TOXENV: py35
+  - TOXENV: py36
+  - TOXENV: py37
+
+build: off
+
+install:
+- pip install .
+
+test_script:
+- python temp.py'''
+
+    travis = '''language: python
+python:
+  - "2.7"
+  # - "3.3"    # Seems to FAIL all the time for no reason. Removed for now
+  - "3.4"
+  - "3.5"
+  - "3.5-dev"  # 3.5 development branch
+  - "3.6"
+  - "3.6-dev"  # 3.6 development branch
+
+  # To access the packages inside the virtualenv
+
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
+  - python setup.py install
+
+# command to run tests
+script:
+  - python temp.py'''
+
     isort_config = '''[settings]
 multi_line_output=3
 include_trailing_comma=True
@@ -155,28 +191,28 @@ from setuptools import find_packages, setup
 with open('requirements.txt') as f:
     required = f.read().splitlines()
 
-setup(name="template",
+setup(name="{project_name}}",
       version="0.01",
       install_requires=required,
       packages=find_packages(exclude=["tests"]),
       scripts=[],
       description="CLI tool to create-python-packages",
       long_description="Longer Desciption of the sample plcakge folder",
-      author="AUTHOR",
-      author_email="AUTHOR_EMAIL",
-      maintainer="AUTHOR",
-      maintainer_email="AUTHOR_EMAIL",
-      url="https://github.com/AUTHOR/repo",
-      download_url="https://github.com/AUTHOR/repo/releases",
-      license="unlicensed",
+      author="{author_name}",
+      author_email="{author_email}",
+      maintainer="{author}",
+      maintainer_email="{author_email}",
+      url="https://github.com/{github_username}/{project_name}",
+      download_url="https://github.com/{github_username}/{project_name}/releases",
+      license="{license}",
       test_suite="tests",
       classifiers=[
-          #   "Development Status :: 1 - Planning",
-          "Development Status :: 2 - Pre-Alpha",
-          #   "Development Status :: 3 - Alpha",
-          #   "Development Status :: 4 - Beta",
-          # "Development Status :: 5 - Production/Stable",
-          # "Development Status :: 6 - Mature",
+            # "Development Status :: 1 - Planning",
+            "Development Status :: 2 - Pre-Alpha",
+            # "Development Status :: 3 - Alpha",
+            # "Development Status :: 4 - Beta",
+            # "Development Status :: 5 - Production/Stable",
+            # "Development Status :: 6 - Mature",
           "Intended Audience :: Developers",
           "Intended Audience :: Information Technology",
           "Intended Audience :: Science/Research",

@@ -1,3 +1,6 @@
+from .writer import *
+
+
 class Config:
     '''
     Class to Create the Config for installation
@@ -29,16 +32,45 @@ class Config:
     # color = True
     # requirements = True
     # manifest = None
-    # ci = None  # ?('Tox','Jenkins','TravisCI')
+    # " ci = None  # "?('Tox','Jenkins','TravisCI')
 
     # readme = 'markdown'
     # license = 'unilicense'
     # gitignore = True
     # contributing = False
     # interactive = False
+
+    basic = dict([
+        # ! Miscellenous options
+        ("default", True),
+        ("config_location", '.'),
+        ("display_options", True),
+        ("clear_directory", False),
+
+        # ! Project Details
+        ("project_name", 'PrjectGetGPA'),
+        ("project_version", '0.01alpha'),
+        ("project_description", 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'),
+        ("author_name", 'Ratin Kumar'),
+        ("author_email", 'placeholder.com'),
+        ("github_username", 'DumbMachine'),
+
+        # ! Repo related options
+        ("license", 'MIT'),
+        ("git", True),
+        ("color", True),
+        ("requirements", True),
+        ("readme", 'markdown'),
+        ("contributing", True),
+        ("interactive", False),
+        ("manifest", False),
+        ("setup_cfg", False),
+        ("dockerfile", False),
+    ])
+
     # ! Miscellenous options
     default = True
-    config_location = None
+    config_location = '.'
     display_options = True
     clear_directory = False
 
@@ -47,6 +79,7 @@ class Config:
     project_version = '0.01alpha'
     project_description = 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'
     author_name = 'Ratin Kumar'
+    author_email = 'placeholder.com'
     github_username = 'DumbMachine'
 
     # ! Repo related options
@@ -59,10 +92,10 @@ class Config:
     interactive = False
     manifest = False
     setup_cfg = False
-    docker = False
+    dockerfile = False
 
     # ! Shields Related Options
-    extra = {
+    shields = {
         "build": 'appveyor',
         "codecov": 'codecov',
         "analysis": 'gtihub-lanugage-count',
@@ -81,4 +114,56 @@ class Config:
         "activity": None,
         "other": None,
         "custom_shield": False,
+    }
+
+    actions = {
+        # ! Miscellenous options
+        # default: True,
+        config_location: "Use this in writer",
+        # display_options: True,
+        # clear_directory: False,
+
+        # # ! Project Details
+        # project_name: 'PrjectGetGPA',
+        # project_version: '0.01alpha',
+        # project_description: 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.',
+        # author_name: 'Ratin Kumar',
+        # author_email: "placeholder.com",
+        # github_username: 'DumbMachine',
+
+        # ! Repo related options
+        license: writer_licence,
+        git: writer_git,
+        # color: True,
+        requirements: writer_requriements,
+        readme: writer_readme,
+        contributing: writer_contributing,
+        # interactive: False,
+        manifest: writer_manifest,
+        setup_cfg: writer_setup_cfg,
+        dockerfile: writer_dockerfile,
+        setup_py = writer_setup_py,
+        gitignore = writer_gitignore,
+
+        # # ! Shields Related Options
+        # shields: {
+        #     "build": 'appveyor',
+        #     "codecov": 'codecov',
+        #     "analysis": 'gtihub-lanugage-count',
+        #     "chat": 'discord',
+        #     "dependencies": None,
+        #     "size": 'github-repo-size',
+        #     "downloads": None,
+        #     "funding": None,
+        #     "issues": None,
+        #     "license": 'github',
+        #     "rating": None,
+        #     "social": None,
+        #     "version": 'pypi',
+        #     "platform": None,
+        #     "monitoring": None,
+        #     "activity": None,
+        #     "other": None,
+        #     "custom_shield": False
+        # }
     }
