@@ -9,6 +9,7 @@ import time
 from distutils.sysconfig import get_python_lib
 from .writer import *
 import shutil
+from .generator import generate_README
 
 init(autoreset=True)
 
@@ -98,7 +99,10 @@ def initialize(args):
     conf = config.Config()
     conf.project_name = args['name']
     conf.default = args['default']
+    conf.default = True
     conf.config_location = args['config']
+    if args['config']:
+        conf.default = False
     conf.display_options = args['display']
     conf.color = args['color']
     conf.clear_directory = args['clean']
@@ -169,39 +173,69 @@ def main():
 
 def action_taker(conf):
     writers = ['git', 'setup_py', 'setup_cfg', 'requirements', 'license', 'readme', 'contributing',
-               'manifest', 'dockerfile', 'gitignore']
+               'manifest', 'dockerfile', 'gitignore', 'tests']
     licenses = ['mit', 'agpl3', 'apache2', 'gnu2',
                 'gnugpl3', 'gpl3', 'lgpl3', 'mpl2', 'unilicense']
 
-    if conf.license.lower() in licenses:
-        print(f'License {conf.license}')
-    else:
-        raise NotImplementedError("This license is not yet implemented")
+    # ? Setting up of Variables and Preprocessing.
+    # if conf.license.lower() in licenses:
+    #     print(f'License {conf.license}')
+    # else:
+    #     raise NotImplementedError("This license is not yet implemented")
 
-    if os.path.exists(conf.config_location):
-        # the file is there
-        raise FileExistsError('A file with similar name exists')
-    elif os.access(os.path.dirname(conf.config_location), os.W_OK):
-        # the file does not exists but write privileges are given
-        pass
-    else:
-        # can not write there
-        raise PermissionError('Do not have the permission to Write here.')
+    # if os.path.exists(conf.config_location):
+    #     # the file is there
+    #     raise FileExistsError('A file with similar name exists')
+    # elif os.access(os.path.dirname(conf.config_location), os.W_OK):
+    #     # the file does not exists but write privileges are given
+    #     pass
+    # else:
+    #     # can not write there
+    #     raise PermissionError('Do not have the permission to Write here.')
 
-    if conf.clear_directory:
-        if os.path.exists(os.path.join('.', conf.project_name)):
-            # Delete
-            # os.rmdir(
-            #     os.path.join('.', conf.project_name)
-            # )
-            shutil.rmtree(
-                os.path.join('.', conf.project_name)
+    # if conf.clear_directory:
+    #     if os.path.exists(os.path.join('.', conf.project_name)):
+    #         # Delete
+    #         # os.rmdir(
+    #         #     os.path.join('.', conf.project_name)
+    #         # )
+    #         shutil.rmtree(
+    #             os.path.join('.', conf.project_name)
+    #         )
+    #     else:
+    #         # file doesn't exist. No need to bring in deletion.
+    #         pass
+
+    # ! Writing the files.
+    if not conf.default:
+        # Searching for the custom config thing.
+        if os.path.isfile(os.path.join(conf.config_location, 'config.yaml')):
+            import yaml
+            configuration = yaml.load(
+                open(os.path.join(conf.config_location, 'config.yaml')), Loader=yaml.Loader
             )
+            print(configuration)
         else:
-            # file doesn't exist. No need to bring in deletion.
-            pass
-    for writes in writers:
-        if conf.writes:
+            raise FileNotFoundError(
+                'config.yaml was not found in the mentioned directory.')
+        # Reading the custom config thing.
+
+        # Writing by respecting the config.yml.
+        # raise NotImplementedError
+
+    if conf.default:
+        for writes in conf.basic['files'].keys():
+            if writes == 'license':
+
+                conf.actions['default']['files'][writes](
+                    conf.basic['config_location'], conf.basic['files']['license'])
+
+            try:
+                conf.actions['default']['files'][writes](
+                    conf.basic['config_location'])
+            except:
+                pass
+        generate_README()
 
 
 def run_as_command():

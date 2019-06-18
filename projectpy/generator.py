@@ -1,7 +1,8 @@
 import json
 from datetime import datetime
-
-d = json.load(open('./data.json'))
+from .content import data
+# d = json.load(open('./data.json'))
+d = data
 
 
 class Shields:
@@ -21,7 +22,7 @@ class Shields:
 
         '''
 
-        self.data = json.load(open('data.json'))
+        self.data = data
         self.base = base
         self.mode = mode
         self.entity = entity
@@ -146,7 +147,7 @@ def generate_README(location='./sex.md'):
 
 
 print(code('python', 'print(10)'))
-generate_README()
+# generate_README()
 # print(watermark())
 # print(license())
 # print(contributing())

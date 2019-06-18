@@ -193,3 +193,8 @@ Example_Repo
 - [ ] Add support for Jenkins
 - [ ] Check for COnda INstall Support
 - [ ] Add Support for Black/isort
+- [ ] Add option for presets.
+  - [ ] Data Science/ Kaggle.
+  - [ ] Web
+    - [ ] Flask
+    - [ ]
