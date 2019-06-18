@@ -30,19 +30,6 @@ def options():
 
     ap.add_argument("-n", "--name", required=True, help="Name of the project")
 
-    # ap.add_argument(
-    #     "-us",
-    #     "--username",
-    #     required=False,
-    #     help="Github Username",
-    #     default=" username")
-    # ap.add_argument(
-    #     "-ue",
-    #     "--usermail",
-    #     required=False,
-    #     help="Email of the User",
-    #     default=' usermail')
-
     ap.add_argument(
         "-d",
         "--default",
@@ -108,67 +95,15 @@ def initialize(args):
     conf.clear_directory = args['clean']
     conf.interactive = args['interactive']
 
-    # conf.username = args.username
-    # conf.usermail = args.usermail
-
-    # # conf.docker = args.docker
-    # conf.color = args.color
-    # # conf.ci = args.cintergrations
-    # # conf.license = args.license
-    # conf.clear = args.clear
-    # conf.interactive = args.interactive
-
     return conf
 
 
 def main():
     args = options()
-    # print(f'OPTIONS {args}')
-    # print(args['name'])
-    # print(f'CONFIG {initialize(args)}')
-    # print(Fore.GREEN, args)
-
-    # if os.path.exists(os.path.join(os.getcwd(), args['name'])):
-    #     raise FileExistsError(
-    #         (Fore.RED +
-    #          "The file exitsts already. Pass -clr, if you want to delete that folder"))
-
-    # else:
-    #     os.makedirs(os.path.join(os.getcwd(), args['name']))
-
-    # # ! Compying the contents of template to Target
-    # try:
-    #     import site
-    #     base = site.getsitepackages()[0]
-    # except BaseException:
-    #     base = get_python_lib()
-    # files_to_copy = utils.files()
-    # i = 0
-    # for file in files_to_copy:
-    #     location = os.path.join(base, 'projectpy/template', file)
-    #     utils.copy_files(location, args['name'])
-    #     time.sleep(0.001)
-    #     utils.progressBar(i *
-    #                       len(files_to_copy), len(files_to_copy) *
-    #                       10, "Copying file {}".format(file[:15]))
-    #     i += 1
-
-    # print()
-
-    # print(utils.replacer(args['name']))
-    # utils.cprint(os.getcwd(), "", "")
-    # utils.cprint("TICK", "Option", "Choice", heading=True)
-    # for key in args.keys():
-    #     utils.cprint('[INFO]', key, args[key])
-
     print("Creating the new folder")
 
     action_taker(initialize(args))
     print(initialize(args).license)
-    # conf = initialize(options())
-
-    # if conf.usermail == True:
-    #     conf.git = True
 
 
 def action_taker(conf):
@@ -235,7 +170,10 @@ def action_taker(conf):
                     conf.basic['config_location'])
             except:
                 pass
-        generate_README()
+        try:
+            generate_README()
+        except:
+            raise RuntimeError('There was a problem generating the README.md')
 
 
 def run_as_command():

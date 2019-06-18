@@ -112,7 +112,7 @@ def code(language, content):
     return f"```{language}\n{content}\n```"
 
 
-def generate_README(location='./sex.md'):
+def generate_README(location='README.md'):
 
     readme = open(location, 'w+')
     readme.write(header(

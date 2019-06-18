@@ -3,17 +3,6 @@ import platform
 
 from setuptools import find_packages, setup
 
-# ? To Copy the Template Data
-temp = [f for f in os.walk('./projectpy/template')]
-files = []
-for tempy in temp:
-    base = tempy[0]
-    for somethingelse in tempy[1:]:
-        for something in somethingelse[:]:
-            files.append(os.path.join(tempy[0], something))
-files = [file.replace('./projectpy/', './') for file in files]
-
-
 with open('./requirements.txt') as f:
     required = f.read().splitlines()
 
@@ -44,11 +33,11 @@ setup(name="projectpy",
       # tests_require = ["pytest"],
       classifiers=[
           #   "Development Status :: 1 - Planning",
-          # "Development Status :: 2 - Pre-Alpha",
-          "Development Status :: 3 - Alpha",
+          "Development Status :: 2 - Pre-Alpha",
+          #   "Development Status :: 3 - Alpha",
           #   "Development Status :: 4 - Beta",
-          # "Development Status :: 5 - Production/Stable",
-          # "Development Status :: 6 - Mature",
+          #   "Development Status :: 5 - Production/Stable",
+          #   "Development Status :: 6 - Mature",
           "Intended Audience :: Developers",
           "Intended Audience :: Information Technology",
           "Intended Audience :: Science/Research",
