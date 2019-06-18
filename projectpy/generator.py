@@ -25,6 +25,8 @@ class Shields:
         self.base = base
         self.mode = mode
         self.entity = entity
+        if style not in ['plastic', 'flat', 'flat-square', 'for-the-badge', 'poput', 'popout-square', 'social']:
+            raise ValueError(f"{style} is not Available")
         self.style = style
         # self.markdown = f"![{self.entity}]({})"
         # self.rst = f".. image:: {}   :alt: {self.entity}"
@@ -91,6 +93,7 @@ def license(license='MIT'):
 
 
 def watermark():
+    awesome = 'https://img.shields.io/badge/made--with--%E2%99%A5--by-ProjectPy-blueviolet.svg'
     return f"\n---\n<sub>This README was generated with ❤ by create-python-project </sub>"
 
 

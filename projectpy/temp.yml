@@ -1,0 +1,36 @@
+project_name: "PrjectGetGPA"
+project_version: 0.01alpha
+project_description: "Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow."
+author_name: "Ratin Kumar"
+github_username: "DumbMachine"
+
+license: "MIT"
+git: True
+color: True
+requirements: True
+readme: "markdown"
+contributing: True
+interactive: False
+
+extra:
+  build: "appveyor"
+  codecov: "codecov"
+  analysis: "gtihub-lanugage-count"
+  chat: "discord"
+  dependencies:
+  size: "github-repo-size"
+  downloads:
+  funding:
+  issues:
+  license: "github"
+  rating:
+  social:
+  version: "pypi"
+  platform:
+  monitoring:
+  activity:
+  other:
+# **$MINOR THINGS**:
+#   manifest:
+#   setup.cfg:
+#   docker: False
