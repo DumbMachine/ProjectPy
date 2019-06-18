@@ -57,6 +57,7 @@ class Config:
         ("author_name", 'Ratin Kumar'),
         ("author_email", 'placeholder.com'),
         ("github_username", 'DumbMachine'),
+        ("license", 'MIT'),
 
         # ! Repo related options
         ('files', dict([
@@ -65,6 +66,7 @@ class Config:
             ("color", True),
             ("requirements", True),
             ("tests", True),
+            ("main", True),
             ("contributing", True),
             ("interactive", False),
             ("manifest", False),
@@ -72,6 +74,12 @@ class Config:
             ("setup_py", True),
             ("dockerfile", False),
             ("readme", 'markdown'),
+        ])),
+
+        # ! Shields
+        ('shields', dict([
+            ("base", ['chat', 'build', 'custom', 'license']),
+            ("entity", ['discord', 'appveyor', 'custom', 'github']),
         ]))
     ])
 
@@ -142,6 +150,7 @@ class Config:
                 'setup_py': writer_setup_py,
                 'gitignore': writer_gitignore,
                 'tests': writer_tests,
+                'main': writer_main,
             }
         }
     }

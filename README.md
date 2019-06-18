@@ -188,13 +188,16 @@ Example_Repo
 # 🗒 TODO:
 
 - [ ] Add support for Logging.
-- [ ] Improve the CLI ( Add more colors )
+- [ ] Improve the CLI ( Add more colors ).
 - [ ] Make examples for showing the thing.
-- [ ] Add support for Jenkins
-- [ ] Check for COnda INstall Support
-- [ ] Add Support for Black/isort
+- [ ] Add support for Jenkins.
+- [ ] Check for COnda INstall Support.
+- [ ] Add Support for Black/isort.
+- [ ] Add support for Submodules.
+- [ ] Format years and shizz in the LICENSES.
 - [ ] Add option for presets.
-  - [ ] Data Science/ Kaggle.
+  - [ ] Data Science/ Kaggle
   - [ ] Web
     - [ ] Flask
+    - [ ] Django
     - [ ]

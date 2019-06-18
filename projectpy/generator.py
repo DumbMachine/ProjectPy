@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from .content import data
-# d = json.load(open('./data.json'))
+import os
 d = data
 
 
@@ -45,7 +45,10 @@ class Shields:
                     return f".. image:: {item[self.entity]}   :alt: {self.entity}?style={self.style}"
 
 
-def customShield(label, message, color='orange', mode='markdown', name='Custom Shield'):
+def customShield(label='label', message='message', color='orange', mode='markdown', name='Custom Shield'):
+    '''
+
+    '''
     if mode not in ['markdown', 'md', 'restructuredtext', 'rst']:
         raise NotImplementedError(f'{mode} is not implemented yet.')
     else:
@@ -77,8 +80,9 @@ def lister(points, style="*", mode='markdown'):
             raise NotImplementedError('Will implement rst later.')
 
 
-def requirements(location='./requirements.txt'):
-    text = open(location, 'r').read().splitlines()
+def requirements(location):
+    text = open(os.path.join(location, 'requirements.txt'),
+                'r').read().splitlines()
     return header(title='Requirements', content=lister(text))
 
 
@@ -112,17 +116,29 @@ def code(language, content):
     return f"```{language}\n{content}\n```"
 
 
-def generate_README(location='README.md'):
-
-    readme = open(location, 'w+')
+def generate_README(location, shields):
+    '''
+    >>> shields = {
+            'base': ['chat', 'build'],
+            'entity': ['discord', 'appveyor']
+        }
+    '''
+    readme = open(os.path.join(location, 'README.md'), 'w+')
     readme.write(header(
         title='REPO_NAME'
     ))
-    readme.write(Shields(base='chat', entity='discord').get_shield())
-    readme.write(" ")
-    readme.write(Shields(base='build', entity='appveyor').get_shield())
+    if shields:
+        for count in range(len(shields['base'])):
+            if shields['base'][count] == 'custom':
+                readme.write(customShield())
+                readme.write(" ")
+            else:
+                readme.write(Shields(
+                    base=shields['base'][count], entity=shields['entity'][count]).get_shield())
+                readme.write(" ")
+    # readme.write(Shields(base='build', entity='appveyor').get_shield())
     readme.write("\n")
-    readme.write(requirements())
+    readme.write(requirements(location=location))
     readme.write("\n")
     readme.write(header(
         title='Installation',
@@ -144,14 +160,3 @@ def generate_README(location='README.md'):
     readme.write(watermark())
 
     readme.close()
-
-
-print(code('python', 'print(10)'))
-# generate_README()
-# print(watermark())
-# print(license())
-# print(contributing())
-# print(homepage('www.google.com'))
-# print(requirements())
-# print(lister([1,2,3,4]))
-# print(header(title='something', content='this is the randon thext. That i thinks represents the content.'))

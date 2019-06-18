@@ -6,7 +6,6 @@ import site
 import sys
 import textwrap
 import time
-from distutils.sysconfig import get_python_lib
 from .writer import *
 import shutil
 from .generator import generate_README
@@ -100,10 +99,7 @@ def initialize(args):
 
 def main():
     args = options()
-    print("Creating the new folder")
-
     action_taker(initialize(args))
-    print(initialize(args).license)
 
 
 def action_taker(conf):
@@ -113,33 +109,34 @@ def action_taker(conf):
                 'gnugpl3', 'gpl3', 'lgpl3', 'mpl2', 'unilicense']
 
     # ? Setting up of Variables and Preprocessing.
-    # if conf.license.lower() in licenses:
-    #     print(f'License {conf.license}')
-    # else:
-    #     raise NotImplementedError("This license is not yet implemented")
+    if conf.license.lower() in licenses:
+        print(f'License {conf.license}')
+    else:
+        raise NotImplementedError("This license is not yet implemented")
 
-    # if os.path.exists(conf.config_location):
-    #     # the file is there
-    #     raise FileExistsError('A file with similar name exists')
-    # elif os.access(os.path.dirname(conf.config_location), os.W_OK):
-    #     # the file does not exists but write privileges are given
-    #     pass
-    # else:
-    #     # can not write there
-    #     raise PermissionError('Do not have the permission to Write here.')
+    if os.path.exists(os.path.join('.', conf.project_name)):
+        # the file is there
+        raise FileExistsError('A file with similar name exists')
+    elif os.access(os.path.dirname(os.path.join('.', conf.project_name)), os.W_OK):
+        # the file does not exists but write privileges are given
+        os.makedirs(os.path.join('.', conf.project_name))
+        # pass
+    else:
+        # can not write there
+        raise PermissionError('Do not have the permission to Write here.')
 
-    # if conf.clear_directory:
-    #     if os.path.exists(os.path.join('.', conf.project_name)):
-    #         # Delete
-    #         # os.rmdir(
-    #         #     os.path.join('.', conf.project_name)
-    #         # )
-    #         shutil.rmtree(
-    #             os.path.join('.', conf.project_name)
-    #         )
-    #     else:
-    #         # file doesn't exist. No need to bring in deletion.
-    #         pass
+    if conf.clear_directory:
+        if os.path.exists(os.path.join('.', conf.project_name)):
+            # Delete
+            # os.rmdir(
+            #     os.path.join('.', conf.project_name)
+            # )
+            shutil.rmtree(
+                os.path.join('.', conf.project_name)
+            )
+        else:
+            # file doesn't exist. No need to bring in deletion.
+            pass
 
     # ! Writing the files.
     if not conf.default:
@@ -163,17 +160,27 @@ def action_taker(conf):
             if writes == 'license':
 
                 conf.actions['default']['files'][writes](
-                    conf.basic['config_location'], conf.basic['files']['license'])
+                    f'./{conf.project_name}', conf.basic['files']['license'])
 
             try:
                 conf.actions['default']['files'][writes](
-                    conf.basic['config_location'])
+                    f'./{conf.project_name}')
             except:
                 pass
-        try:
-            generate_README()
-        except:
-            raise RuntimeError('There was a problem generating the README.md')
+
+            if writes == 'setup_py':
+                conf.actions['default']['files'][writes](
+                    f'./{conf.project_name}', conf.basic)
+
+            if writes == 'main':
+                conf.actions['default']['files'][writes](
+                    f'./{conf.project_name}', conf.basic['project_name'])
+        # try:
+        generate_README(os.path.join(
+            '.', f'./{conf.project_name}'), shields=conf.basic['shields'])
+        # except Exception as e:
+        # print(e)
+        # raise RuntimeError('There was a problem generating the README.md')
 
 
 def run_as_command():

@@ -7,8 +7,9 @@ def writer_gitignore(location):
     open(os.path.join(location, '.gitignore'), 'w+').write(Content.gitignore)
 
 
-def writer_setup_py(location):
-    open(os.path.join(location, 'setup.py'), 'w+').write(Content.setup_py)
+def writer_setup_py(location, data):
+    open(os.path.join(location, 'setup.py'),
+         'w+').write(Content.setup_py.format_map(data))
 
 
 def writer_licence(location, hmm):
@@ -76,6 +77,13 @@ def writer_tests(location):
         os.makedirs(os.path.join(location, 'tests'))
     open(os.path.join(os.path.join(location, 'tests'),
                       '__init__.py'), 'w+').write("TESTS file")
+
+
+def writer_main(location, repo_name):
+    if not os.path.exists(os.path.join(location, repo_name)):
+        os.makedirs(os.path.join(location, repo_name))
+    open(os.path.join(os.path.join(location, repo_name),
+                      '__init__.py'), 'w+').write("print('Succesfull Installation')")
 
 # writer_setup_cfg(os.getcwd())
 # writer_requriements(os.getcwd())
