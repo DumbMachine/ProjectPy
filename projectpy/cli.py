@@ -11,7 +11,6 @@ from colorama import Fore, init
 from . import config, utils
 
 init(autoreset=True)
-1
 
 
 def options():
@@ -29,39 +28,39 @@ def options():
                                        '''))
 
     ap.add_argument("-n", "--name", required=True, help="Name of the project")
+
+    # ap.add_argument(
+    #     "-us",
+    #     "--username",
+    #     required=False,
+    #     help="Github Username",
+    #     default=" username")
+    # ap.add_argument(
+    #     "-ue",
+    #     "--usermail",
+    #     required=False,
+    #     help="Email of the User",
+    #     default=' usermail')
+
     ap.add_argument(
-        "-us",
-        "--username",
+        "-d",
+        "--default",
         required=False,
-        help="Github Username",
-        default=" username")
-    ap.add_argument(
-        "-ue",
-        "--usermail",
-        required=False,
-        help="Email of the User",
-        default=' usermail')
+        help="Minimilastic Installation",
+        default=True)
 
     ap.add_argument(
         "-c",
-        "--custom",
-        required=False,
-        help="Take the customs we provide",
-        default='True')
-
-    ap.add_argument("-ci", "--cintergrations", required=False,
-                    help='''Choice of the Continuous Integration\n
-                    {
-                        "travis": For the choice of using travis-ci,
-                        "tox": For the choice of using Tox,
-                        "jenkins": For the choice of using Jenkins
-                            }''', default='travis')
-
-    ap.add_argument(
-        "-con",
         "--config",
         required=False,
-        help="Display the Default Config",
+        help="Location of the config.yaml/config.yml file",
+        default=True)
+
+    ap.add_argument(
+        "-dis",
+        "--display",
+        required=False,
+        help="Displays the Current Config",
         default=True)
 
     ap.add_argument(
@@ -76,13 +75,6 @@ def options():
         "--clean",
         required=False,
         help="Delete folder with same name if it exits",
-        default=False)
-
-    ap.add_argument(
-        "-custom",
-        "--git",
-        required=False,
-        help="Delete the folder, if similar exists",
         default=False)
 
     ap.add_argument(
@@ -104,65 +96,72 @@ def initialize(args):
             : The arguments parsed by the CLI
     '''
     conf = config.Config()
-    conf.username = args.username
-    conf.usermail = args.usermail
+    conf.project_name = args['name']
+    conf.default = args['default']
+    conf.config_location = args['config']
+    conf.display_options = args['display']
+    conf.color = args['color']
+    conf.clear_directory = args['clean']
+    conf.interactive = args['interactive']
 
-    conf.docker = args.docker
-    conf.color = args.color
-    conf.ci = args.cintergrations
-    conf.license = args.license
-    conf.clear = args.clear
-    conf.interactive = args.interactive
+    # conf.username = args.username
+    # conf.usermail = args.usermail
+
+    # # conf.docker = args.docker
+    # conf.color = args.color
+    # # conf.ci = args.cintergrations
+    # # conf.license = args.license
+    # conf.clear = args.clear
+    # conf.interactive = args.interactive
+
     return conf
 
 
 def main():
     args = options()
-    # print(Fore.GREEN,args)
+    print(f'OPTIONS {args}')
+    # print(args['name'])
+    # print(f'CONFIG {initialize(args)}')
+    print(Fore.GREEN, args)
 
-    if os.path.exists(os.path.join(os.getcwd(), args['name'])):
-        raise FileExistsError(
-            (Fore.RED +
-             "The file exitsts already. Pass -clr, if you want to delete that folder"))
+    # if os.path.exists(os.path.join(os.getcwd(), args['name'])):
+    #     raise FileExistsError(
+    #         (Fore.RED +
+    #          "The file exitsts already. Pass -clr, if you want to delete that folder"))
 
-    else:
-        os.makedirs(os.path.join(os.getcwd(), args['name']))
+    # else:
+    #     os.makedirs(os.path.join(os.getcwd(), args['name']))
 
-    # ! Compying the contents of template to Target
-    try:
-        import site
-        base = site.getsitepackages()[0]
-    except BaseException:
-        base = get_python_lib()
-    files_to_copy = utils.files()
-    i = 0
-    for file in files_to_copy:
-        location = os.path.join(base, 'projectpy/template', file)
-        utils.copy_files(location, args['name'])
-        time.sleep(0.001)
-        utils.progressBar(i *
-                          len(files_to_copy), len(files_to_copy) *
-                          10, "Copying file {}".format(file[:15]))
-        i += 1
-
-    print()
-
-    print(utils.replacer(args['name']))
-    # utils.cprint(os.getcwd(),"","")
-    utils.cprint("TICK", "Option", "Choice", heading=True)
-    for key in args.keys():
-        utils.cprint('[INFO]', key, args[key])
+    # # ! Compying the contents of template to Target
+    # try:
+    #     import site
+    #     base = site.getsitepackages()[0]
+    # except BaseException:
+    #     base = get_python_lib()
+    # files_to_copy = utils.files()
+    # i = 0
+    # for file in files_to_copy:
+    #     location = os.path.join(base, 'projectpy/template', file)
+    #     utils.copy_files(location, args['name'])
+    #     time.sleep(0.001)
+    #     utils.progressBar(i *
+    #                       len(files_to_copy), len(files_to_copy) *
+    #                       10, "Copying file {}".format(file[:15]))
+    #     i += 1
 
     # print()
+
+    # print(utils.replacer(args['name']))
+    # utils.cprint(os.getcwd(),"","")
+    # utils.cprint("TICK", "Option", "Choice", heading=True)
+    # for key in args.keys():
+    #     utils.cprint('[INFO]', key, args[key])
+
+    # # print()
     # conf = initialize(options())
 
     # if conf.usermail == True:
     #     conf.git = True
-
-
-def parser(conf):
-    pass
-    # username
 
 
 def run_as_command():
@@ -188,14 +187,30 @@ def questions():
     print(answers)
 
 
-def customShield(label, message, color='orange', mode='markdown', name='Custom Shield'):
-    if mode not in ['markdown', 'md', 'restructuredtext', 'rst']:
-        raise NotImplementedError(f'{mode} is not implemented yet.')
-    else:
-        if mode in ['markdown', 'md']:
-            return f"![Custom Shield](https://img.shields.io/badge/{label}-{message}-{color}.svg)"
-        else:
-            return f".. image:: https://img.shields.io/badge/{label}-{message}-{color}.svg   :alt: Custom Shield"
-
-
 def parser():
+    raise NotImplementedError
+
+
+def create_home_dir():
+    """Create Directory for retriever."""
+    current_platform = platform.system().lower()
+    if current_platform != 'windows':
+        import pwd
+
+    # create the necessary directory structure for storing scripts/raw_data
+    # in the ~/.retriever directory
+    required_dirs = [os.path.join(HOME_DIR, dirs)
+                     for dirs in ['', 'config', 'history']]
+    for dir in required_dirs:
+        if not os.path.exists(dir):
+            try:
+                os.makedirs(dir)
+                if (current_platform != 'windows') and os.getenv("SUDO_USER"):
+                    # owner of .retriever should be user even when installing
+                    # w/sudo
+                    pw = pwd.getpwnam(os.getenv("SUDO_USER"))
+                    os.chown(dir, pw.pw_uid, pw.pw_gid)
+            except OSError:
+                print("ProjectPy lacks permission to "
+                      "access the ~/.projectpy/ directory.")
+                raise

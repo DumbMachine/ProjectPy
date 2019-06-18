@@ -36,6 +36,11 @@ class Config:
     # gitignore = True
     # contributing = False
     # interactive = False
+    # ! Miscellenous options
+    default = True
+    config_location = None
+    display_options = True
+    clear_directory = False
 
     # ! Project Details
     project_name = 'PrjectGetGPA'
@@ -53,27 +58,27 @@ class Config:
     contributing = True
     interactive = False
     manifest = False
-    setup.cfg = False
+    setup_cfg = False
     docker = False
 
     # ! Shields Related Options
     extra = {
-        build: 'appveyor'
-        codecov: 'codecov'
-        analysis: 'gtihub-lanugage-count'
-        chat: 'discord'
-        dependencies: None
-        size: 'github-repo-size'
-        downloads: None
-        funding: None
-        issues: None
-        license: 'github'
-        rating: None
-        social: None
-        version: 'pypi'
-        platform: None
-        monitoring: None
-        activity: None
-        other: None
-        custom_shield: False
+        "build": 'appveyor',
+        "codecov": 'codecov',
+        "analysis": 'gtihub-lanugage-count',
+        "chat": 'discord',
+        "dependencies": None,
+        "size": 'github-repo-size',
+        "downloads": None,
+        "funding": None,
+        "issues": None,
+        "license": 'github',
+        "rating": None,
+        "social": None,
+        "version": 'pypi',
+        "platform": None,
+        "monitoring": None,
+        "activity": None,
+        "other": None,
+        "custom_shield": False,
     }

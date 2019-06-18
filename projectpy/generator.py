@@ -44,6 +44,16 @@ class Shields:
                     return f".. image:: {item[self.entity]}   :alt: {self.entity}?style={self.style}"
 
 
+def customShield(label, message, color='orange', mode='markdown', name='Custom Shield'):
+    if mode not in ['markdown', 'md', 'restructuredtext', 'rst']:
+        raise NotImplementedError(f'{mode} is not implemented yet.')
+    else:
+        if mode in ['markdown', 'md']:
+            return f"![Custom Shield](https://img.shields.io/badge/{label}-{message}-{color}.svg)"
+        else:
+            return f".. image:: https://img.shields.io/badge/{label}-{message}-{color}.svg   :alt: Custom Shield"
+
+
 def header(title=None, content='', style="##", mode='markdown'):
     if mode not in ['markdown', 'rst', 'md', 'restructuredtext']:
         raise ValueError('A very specific bad thing happened.')
