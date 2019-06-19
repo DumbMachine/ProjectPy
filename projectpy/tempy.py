@@ -1,4 +1,4 @@
-from .writer import *
+# from .writer import *
 
 
 class Config:
@@ -78,8 +78,8 @@ class Config:
 
         # ! Shields
         ('shields', dict([
-            ("base", ['chat', 'build', 'custom', 'license']),
-            ("entity", ['discord', 'appveyor', 'custom', 'github']),
+            ("base", []),
+            ("entity", []),
         ]))
     ])
 
@@ -120,46 +120,6 @@ class Config:
         ('shields', dict([
             ("base", []),
             ("entity", []),
-        ]))
-    ])
-
-    full_option = dict([
-        # ! Miscellenous options
-        ("default", True),
-        ("config_location", '.'),
-        ("display_options", True),
-        ("clear_directory", False),
-
-        # ! Project Details
-        ("project_name", 'PrjectGetGPA'),
-        ("project_version", '0.01alpha'),
-        ("project_description", 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'),
-        ("author_name", 'Ratin Kumar'),
-        ("author_email", 'placeholder.com'),
-        ("github_username", 'DumbMachine'),
-        ("license", 'MIT'),
-
-        # ! Repo related options
-        ('files', dict([
-            ("license", 'MIT'),
-            ("git", True),
-            ("color", True),
-            ("requirements", True),
-            ("tests", True),
-            ("main", True),
-            ("contributing", True),
-            ("interactive", False),
-            ("manifest", False),
-            ("setup_cfg", False),
-            ("setup_py", True),
-            ("dockerfile", False),
-            ("readme", 'markdown'),
-        ])),
-
-        # ! Shields
-        ('shields', dict([
-            ("base", ['chat', 'build', 'custom', 'license']),
-            ("entity", ['discord', 'appveyor', 'custom', 'github']),
         ]))
     ])
 
@@ -215,20 +175,20 @@ class Config:
     actions = {
         'default': {
             'files': {
-                'license': writer_licence,
-                'git': writer_git,
-                '# color': True,
-                'requirements': writer_requriements,
-                'readme': writer_readme,
-                'contributing': writer_contributing,
-                '# interactive': False,
-                'manifest': writer_manifest,
-                'setup_cfg': writer_setup_cfg,
-                'dockerfile': writer_dockerfile,
-                'setup_py': writer_setup_py,
-                'gitignore': writer_gitignore,
-                'tests': writer_tests,
-                'main': writer_main,
+                'license': 'writer_licence',
+                'git': 'writer_git',
+                'color': True,
+                'requirements': 'writer_requriements',
+                'readme': 'writer_readme',
+                'contributing': 'writer_contributing',
+                'interactive': False,
+                'manifest': 'writer_manifest',
+                'setup_cfg': 'writer_setup_cfg',
+                'dockerfile': 'writer_dockerfile',
+                'setup_py': 'writer_setup_py',
+                'gitignore': 'writer_gitignore',
+                'tests': 'writer_tests',
+                'main': 'writer_main',
             }
         }
     }

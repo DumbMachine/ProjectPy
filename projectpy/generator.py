@@ -133,9 +133,15 @@ def generate_README(location, shields):
                 readme.write(customShield())
                 readme.write(" ")
             else:
-                readme.write(Shields(
-                    base=shields['base'][count], entity=shields['entity'][count]).get_shield())
-                readme.write(" ")
+                if type(shields['entity'][count]) == list:
+                    for enty in shields['entity'][count]:
+                        readme.write(Shields(
+                            base=shields['base'][count], entity=enty).get_shield())
+                        readme.write(" ")
+                else:
+                    readme.write(Shields(
+                        base=shields['base'][count], entity=shields['entity'][count]).get_shield())
+                    readme.write(" ")
     # readme.write(Shields(base='build', entity='appveyor').get_shield())
     readme.write("\n")
     readme.write(requirements(location=location))

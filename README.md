@@ -195,6 +195,7 @@ Example_Repo
 - [ ] Add Support for Black/isort.
 - [ ] Add support for Submodules.
 - [ ] Format years and shizz in the LICENSES.
+- [ ] Write up a function to generate Config template.
 - [ ] Add option for presets.
   - [ ] Data Science/ Kaggle
   - [ ] Web

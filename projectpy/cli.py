@@ -9,6 +9,7 @@ import time
 from .writer import *
 import shutil
 from .generator import generate_README
+import warnings
 
 init(autoreset=True)
 
@@ -103,14 +104,25 @@ def main():
 
 
 def action_taker(conf):
-    writers = ['git', 'setup_py', 'setup_cfg', 'requirements', 'license', 'readme', 'contributing',
-               'manifest', 'dockerfile', 'gitignore', 'tests']
+    writers = [
+        'git',
+        'setup_py',
+        'setup_cfg',
+        'requirements',
+        'license',
+        'readme',
+        'contributing',
+        'manifest',
+        'dockerfile',
+        'gitignore',
+        'tests']
     licenses = ['mit', 'agpl3', 'apache2', 'gnu2',
                 'gnugpl3', 'gpl3', 'lgpl3', 'mpl2', 'unilicense']
 
     # ? Setting up of Variables and Preprocessing.
     if conf.license.lower() in licenses:
-        print(f'License {conf.license}')
+        # print(f'License {conf.license}')
+        pass
     else:
         raise NotImplementedError("This license is not yet implemented")
 
@@ -141,12 +153,54 @@ def action_taker(conf):
     # ! Writing the files.
     if not conf.default:
         # Searching for the custom config thing.
-        if os.path.isfile(os.path.join(conf.config_location, 'config.yaml')):
-            import yaml
-            configuration = yaml.load(
-                open(os.path.join(conf.config_location, 'config.yaml')), Loader=yaml.Loader
-            )
-            print(configuration)
+        # if os.path.isfile(os.path.join(conf.config_location, '.config.yaml')):
+        import yaml
+        thing = yaml.load(
+            open(
+                os.path.join(
+                    conf.config_location
+                    # '.'
+                    # '.config.yaml'
+                )
+            ),
+            Loader=yaml.Loader)
+        # print(configuration)
+        conf = config.Config()
+        for item in thing.keys():
+            if item in utils.files:
+                conf.all['files'][item] = thing[item]
+            elif item in utils.shields:
+                conf.all['shields']['base'].append(item)
+                conf.all['shields']['entity'].append(thing[item])
+            else:
+                # try:
+                conf.all[item] = thing[item]
+
+        for writes in conf.all['files'].keys():
+            if writes == 'license':
+                conf.actions['default']['files'][writes](
+                    f'./{conf.project_name}', conf.all['files']['license'])
+
+            try:
+                conf.actions['default']['files'][writes](
+                    f'./{conf.project_name}')
+            except BaseException:
+                warnings.warn('Some error occured, clearing the folder')
+                shutil.rmtree(
+                    os.path.join('.', conf.project_name)
+                )
+                # pass
+
+            if writes == 'setup_py':
+                conf.actions['default']['files'][writes](
+                    f'./{conf.project_name}', conf.all)
+
+            if writes == 'main':
+                conf.actions['default']['files'][writes](
+                    f'./{conf.project_name}', conf.all['project_name'])
+        # try:
+            generate_README(os.path.join(
+                f'./{conf.project_name}'), shields=conf.basic['shields'])
         else:
             raise FileNotFoundError(
                 'config.yaml was not found in the mentioned directory.')
@@ -158,14 +212,17 @@ def action_taker(conf):
     if conf.default:
         for writes in conf.basic['files'].keys():
             if writes == 'license':
-
                 conf.actions['default']['files'][writes](
                     f'./{conf.project_name}', conf.basic['files']['license'])
 
             try:
                 conf.actions['default']['files'][writes](
                     f'./{conf.project_name}')
-            except:
+            except BaseException:
+                # warnings.warn('Some error occured, clearing the folder')
+                # shutil.rmtree(
+                #     os.path.join('.', conf.project_name)
+                # )
                 pass
 
             if writes == 'setup_py':
@@ -178,6 +235,8 @@ def action_taker(conf):
         # try:
         generate_README(os.path.join(
             '.', f'./{conf.project_name}'), shields=conf.basic['shields'])
+
+        # print(conf.basic)
         # except Exception as e:
         # print(e)
         # raise RuntimeError('There was a problem generating the README.md')
