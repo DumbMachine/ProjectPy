@@ -120,7 +120,7 @@ def action_taker(conf):
                 'gnugpl3', 'gpl3', 'lgpl3', 'mpl2', 'unilicense']
 
     # ? Setting up of Variables and Preprocessing.
-    if conf.license.lower() in licenses:
+    if conf.options['license'].lower() in licenses:
         # print(f'License {conf.license}')
         pass
     else:
@@ -165,42 +165,42 @@ def action_taker(conf):
             ),
             Loader=yaml.Loader)
         # print(configuration)
-        conf = config.Config()
-        for item in thing.keys():
-            if item in utils.files:
-                conf.all['files'][item] = thing[item]
-            elif item in utils.shields:
-                conf.all['shields']['base'].append(item)
-                conf.all['shields']['entity'].append(thing[item])
-            else:
-                # try:
-                conf.all[item] = thing[item]
+        # conf = config.Config()
+        # for item in thing.keys():
+        #     if item in utils.files:
+        #         conf.all['files'][item] = thing[item]
+        #     elif item in utils.shields:
+        #         conf.all['shields']['base'].append(item)
+        #         conf.all['shields']['entity'].append(thing[item])
+        #     else:
+        #         # try:
+        #         conf.all[item] = thing[item]
 
-        for writes in conf.all['files'].keys():
-            if writes == 'license':
-                conf.actions['default']['files'][writes](
-                    f'./{conf.project_name}', conf.all['files']['license'])
+        # for writes in conf.all['files'].keys():
+        #     if writes == 'license':
+        #         conf.actions['default']['files'][writes](
+        #             f'./{conf.project_name}', conf.all['files']['license'])
 
-            try:
-                conf.actions['default']['files'][writes](
-                    f'./{conf.project_name}')
-            except BaseException:
-                warnings.warn('Some error occured, clearing the folder')
-                shutil.rmtree(
-                    os.path.join('.', conf.project_name)
-                )
-                # pass
+        #     try:
+        #         conf.actions['default']['files'][writes](
+        #             f'./{conf.project_name}')
+        #     except BaseException:
+        #         warnings.warn('Some error occured, clearing the folder')
+        #         shutil.rmtree(
+        #             os.path.join('.', conf.project_name)
+        #         )
+        #         # pass
 
-            if writes == 'setup_py':
-                conf.actions['default']['files'][writes](
-                    f'./{conf.project_name}', conf.all)
+        #     if writes == 'setup_py':
+        #         conf.actions['default']['files'][writes](
+        #             f'./{conf.project_name}', conf.all)
 
-            if writes == 'main':
-                conf.actions['default']['files'][writes](
-                    f'./{conf.project_name}', conf.all['project_name'])
-        # try:
-            generate_README(os.path.join(
-                f'./{conf.project_name}'), shields=conf.basic['shields'])
+        #     if writes == 'main':
+        #         conf.actions['default']['files'][writes](
+        #             f'./{conf.project_name}', conf.all['project_name'])
+        # # try:
+        #     generate_README(os.path.join(
+        #         f'./{conf.project_name}'), shields=conf.basic['shields'])
         else:
             raise FileNotFoundError(
                 'config.yaml was not found in the mentioned directory.')
@@ -210,13 +210,13 @@ def action_taker(conf):
         # raise NotImplementedError
 
     if conf.default:
-        for writes in conf.basic['files'].keys():
-            if writes == 'license':
-                conf.actions['default']['files'][writes](
-                    f'./{conf.project_name}', conf.basic['files']['license'])
+        for writes in conf.options['files'].keys():
+            if writes == 'license' and conf.options['files'][writes]:
+                conf.actions[writes](
+                    f'./{conf.project_name}', conf.options['files']['license'])
 
             try:
-                conf.actions['default']['files'][writes](
+                conf.actions[writes](
                     f'./{conf.project_name}')
             except BaseException:
                 # warnings.warn('Some error occured, clearing the folder')
@@ -226,15 +226,16 @@ def action_taker(conf):
                 pass
 
             if writes == 'setup_py':
-                conf.actions['default']['files'][writes](
-                    f'./{conf.project_name}', conf.basic)
+                conf.actions[writes](
+                    f'./{conf.project_name}', conf.options)
 
             if writes == 'main':
-                conf.actions['default']['files'][writes](
-                    f'./{conf.project_name}', conf.basic['project_name'])
+                conf.actions[writes](
+                    f'./{conf.project_name}', conf.options['project_name'])
         # try:
+        print(conf.options)
         generate_README(os.path.join(
-            '.', f'./{conf.project_name}'), shields=conf.basic['shields'])
+            '.', f'./{conf.project_name}'), shields=conf.options['shields'])
 
         # print(conf.basic)
         # except Exception as e:

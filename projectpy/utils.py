@@ -155,19 +155,18 @@ default: False
 license: 'MIT'
 git: True
 colour: True
-interactive: False
-default: False
-license: 'MIT'
+interactive: True
+default: True
 git: True
 colour: True
-interactive: False
+interactive: True
 
 setup_py: True
 setup_cfg: True
 main: True
-manifest: False
-setup.cfg: False
-docker: False
+manifest: True
+setup.cfg: True
+docker: True
 requirements: True
 contributing: True
 readme: 'markdown'
@@ -232,79 +231,121 @@ other:
     conf = Config()
     for item in thing.keys():
         if item in files:
-            conf.all['files'][item] = thing[item]
+            conf.options['files'][item] = thing[item]
         elif item in shields:
-            conf.all['shields']['base'].append(item)
-            conf.all['shields']['entity'].append(thing[item])
+            conf.options['shields']['base'].append(item)
+            conf.options['shields']['entity'].append(thing[item])
         else:
             # try:
-            conf.all[item] = thing[item]
+            conf.options[item] = thing[item]
 
-    print(conf.all)
-    return conf.all
+    print(conf.options)
+    return conf
 
 
-# {
-#     'default': False,
-#     'config_location': '.',
-#     'display_options': True,
-#     'clear_directory': False,
-#     'project_name': 'PrjectGetGPA',
-#     'project_version': '0.01alpha',
-#     'project_description': 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.',
-#     'author_name': 'Ratin Kumar',
-#     'author_email': 'placeholder.com',
-#     'github_username': 'DumbMachine',
-#     'license': 'MIT',
-#     'files': {
-#         'license': 'github',
-#         'git': True,
-#         'color': True,
-#         'requirements': True,
-#         'tests': True,
-#         'main': True,
-#         'contributing': True,
-#         'interactive': False,
-#         'manifest': False,
-#         'setup_cfg': True,
-#         'setup_py': True,
-#         'dockerfile': False,
-#         'readme': 'markdown'},
-#     'shields': {
-#         'base': [
-#             'build',
-#             'codecov',
-#             'analysis',
-#             'chat',
-#             'dependencies',
-#             'size',
-#             'downloads',
-#             'funding',
-#             'issues',
-#             'rating',
-#             'social',
-#             'version',
-#             'platform',
-#             'monitoring',
-#             'activity',
-#             'other'],
-#         'entity': [
-#             'appveyor',
-#             'codecov',
-#             'gtihub-lanugage-count',
-#             'discord',
-#             None,
-#             'github-repo-size',
-#             None,
-#             None,
-#             None,
-#             None,
-#             None,
-#             'pypi',
-#             None,
-#             None,
-#             None,
-#             None]},
-#     'colour': True,
-#     'setup.cfg': False,
-#     'docker': False}
+{
+    'default': True,
+    'config_location': '.',
+    'display_options': True,
+    'clear_directory': False,
+    'project_name': 'PrjectGetGPA',
+    'project_version': '0.01alpha',
+    'project_description': 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.',
+    'author_name': 'Ratin Kumar',
+    'author_email': 'placeholder.com',
+    'github_username': 'DumbMachine',
+    'license': 'MIT',
+    'files': {
+        'license': 'github',
+        'git': True,
+        'color': True,
+        'requirements': True,
+        'tests': True,
+        'main': True,
+        'contributing': True,
+        'interactive': True,
+        'manifest': True,
+        'setup_cfg': True,
+        'setup_py': True,
+        'dockerfile': False,
+        'readme': 'markdown'},
+    'shields': {
+        'base': [
+            'chat',
+            'build',
+            'custom',
+            'license',
+            'build',
+            'codecov',
+            'analysis',
+            'chat',
+            'dependencies',
+            'size',
+            'downloads',
+            'funding',
+            'issues',
+            'rating',
+            'social',
+            'version',
+            'platform',
+            'monitoring',
+            'activity',
+            'other'],
+        'entity': [
+            'discord',
+            'appveyor',
+            'custom',
+            'github',
+            'appveyor',
+            'codecov',
+            'github-lanugage-count',
+            'discord',
+            None,
+            'github-repo-size',
+            None,
+            None,
+            None,
+            None,
+            None,
+            'pypi',
+            None,
+            None,
+            None,
+            None]},
+    'colour': True,
+    'setup.cfg': True,
+    'docker': True}
+
+{
+    'default': True,
+    'config_location': '.',
+    'display_options': True,
+    'clear_directory': False,
+    'project_name': 'gayshit',
+    'project_version': '0.01alpha',
+    'project_description': 'project_descriptions',
+    'author_name': 'Ratin Kumar',
+    'author_email': 'placeholder.com',
+    'github_username': 'DumbMachine',
+    'license': 'MIT',
+    'files': {'license': 'MIT',
+              'git': True,
+              'color': True,
+              'requirements': True,
+              'tests': True,
+              'main': True,
+              'contributing': True,
+              'interactive': False,
+              'manifest': False,
+              'setup_cfg': False,
+              'setup_py': True,
+              'dockerfile': False,
+              'readme': 'markdown'},
+    'shields': {'base': ['chat',
+                         'build',
+                         'custom',
+                         'license'],
+                'entity': ['discord',
+                           'appveyor',
+                           'custom',
+                           'github']}}
