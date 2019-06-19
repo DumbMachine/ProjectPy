@@ -171,25 +171,27 @@ requirements: True
 contributing: True
 readme: 'markdown'
 
-build: 'appveyor'
-codecov: 'codecov'
-analysis: 'gtihub-lanugage-count'
-chat: 'discord'
-dependencies:
-size: 'github-repo-size'
-downloads:
-funding:
-issues:
-license: 'github'
-rating:
-social:
-version: 'pypi'
-platform:
-monitoring:
-activity:
-other:
+shields:
+    build: 'appveyor'
+    codecov: 'codecov'
+    analysis: 'gtihub-lanugage-count'
+    chat: 'discord'
+    dependencies:
+    size: 'github-repo-size'
+    downloads:
+    funding:
+    issues:
+    license: 'github'
+    rating:
+    social:
+    version: 'pypi'
+    platform:
+    monitoring:
+    activity:
+    other:
 '''
-    thing = yaml.load(custom, Loader=yaml.Loader)
+    # thing = yaml.load(custom, Loader=yaml.Loader)
+    thing = yaml.load(open(location), Loader=yaml.Loader)
 
     files = [
         "license",
@@ -228,13 +230,17 @@ other:
         "custom_shield",
     ]
 
-    conf = Config()
+    conf = config.Config()
+    print('gay', conf.options)
     for item in thing.keys():
         if item in files:
             conf.options['files'][item] = thing[item]
-        elif item in shields:
-            conf.options['shields']['base'].append(item)
-            conf.options['shields']['entity'].append(thing[item])
+        # elif item in shields:
+        elif item == 'shields':
+            for small_item in thing[item].keys():
+                conf.options['shields']['base'].append(small_item)
+                conf.options['shields']['entity'].append(
+                    thing[item][small_item])
         else:
             # try:
             conf.options[item] = thing[item]
@@ -243,109 +249,38 @@ other:
     return conf
 
 
-{
-    'default': True,
-    'config_location': '.',
-    'display_options': True,
-    'clear_directory': False,
-    'project_name': 'PrjectGetGPA',
-    'project_version': '0.01alpha',
-    'project_description': 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.',
-    'author_name': 'Ratin Kumar',
-    'author_email': 'placeholder.com',
-    'github_username': 'DumbMachine',
-    'license': 'MIT',
-    'files': {
-        'license': 'github',
-        'git': True,
-        'color': True,
-        'requirements': True,
-        'tests': True,
-        'main': True,
-        'contributing': True,
-        'interactive': True,
-        'manifest': True,
-        'setup_cfg': True,
-        'setup_py': True,
-        'dockerfile': False,
-        'readme': 'markdown'},
-    'shields': {
-        'base': [
-            'chat',
-            'build',
-            'custom',
-            'license',
-            'build',
-            'codecov',
-            'analysis',
-            'chat',
-            'dependencies',
-            'size',
-            'downloads',
-            'funding',
-            'issues',
-            'rating',
-            'social',
-            'version',
-            'platform',
-            'monitoring',
-            'activity',
-            'other'],
-        'entity': [
-            'discord',
-            'appveyor',
-            'custom',
-            'github',
-            'appveyor',
-            'codecov',
-            'github-lanugage-count',
-            'discord',
-            None,
-            'github-repo-size',
-            None,
-            None,
-            None,
-            None,
-            None,
-            'pypi',
-            None,
-            None,
-            None,
-            None]},
-    'colour': True,
-    'setup.cfg': True,
-    'docker': True}
+def writer_writer(conf):
+    '''
+    Used to write shyat
+    '''
+    for writes in conf.options['files'].keys():
+        if writes == 'license' and conf.options['files'][writes]:
+            conf.actions[writes](
+                f"./{conf.options['project_name']}", conf.options['files']['license'])
 
-{
-    'default': True,
-    'config_location': '.',
-    'display_options': True,
-    'clear_directory': False,
-    'project_name': 'gayshit',
-    'project_version': '0.01alpha',
-    'project_description': 'project_descriptions',
-    'author_name': 'Ratin Kumar',
-    'author_email': 'placeholder.com',
-    'github_username': 'DumbMachine',
-    'license': 'MIT',
-    'files': {'license': 'MIT',
-              'git': True,
-              'color': True,
-              'requirements': True,
-              'tests': True,
-              'main': True,
-              'contributing': True,
-              'interactive': False,
-              'manifest': False,
-              'setup_cfg': False,
-              'setup_py': True,
-              'dockerfile': False,
-              'readme': 'markdown'},
-    'shields': {'base': ['chat',
-                         'build',
-                         'custom',
-                         'license'],
-                'entity': ['discord',
-                           'appveyor',
-                           'custom',
-                           'github']}}
+        try:
+            conf.actions[writes](
+                f"./{conf.options['project_name']}")
+        except BaseException:
+            # warnings.warn('Some error occured, clearing the folder')
+            # shutil.rmtree(
+            #     os.path.join('.', conf.options['project_name'])
+            # )
+            pass
+
+        if writes == 'setup_py':
+            conf.actions[writes](
+                f"./{conf.options['project_name']}", conf.options)
+
+        if writes == 'main':
+            conf.actions[writes](
+                f"./{conf.options['project_name']}", conf.options['project_name'])
+    try:
+        print(conf.options)
+        from .generator import generate_README
+        generate_README(os.path.join(
+            '.', f"./{conf.options['project_name']}"), shields=conf.options['shields'])
+
+    except Exception as e:
+        print(e)
+        raise RuntimeError('There was a problem generating the README.md')

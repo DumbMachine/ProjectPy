@@ -1,15 +1,18 @@
-from . import config, utils
-from colorama import Fore, init
 import argparse
+import json
 import os
+import shutil
 import site
 import sys
 import textwrap
 import time
-from .writer import *
-import shutil
-from .generator import generate_README
 import warnings
+
+from colorama import Fore, init
+
+from . import config, utils
+from .generator import generate_README
+from .writer import *
 
 init(autoreset=True)
 
@@ -84,26 +87,37 @@ def initialize(args):
             : The arguments parsed by the CLI
     '''
     conf = config.Config()
-    conf.project_name = args['name']
-    conf.default = args['default']
-    conf.default = True
-    conf.config_location = args['config']
-    if args['config']:
-        conf.default = False
-    conf.display_options = args['display']
-    conf.color = args['color']
-    conf.clear_directory = args['clean']
-    conf.interactive = args['interactive']
+    # print(f'BEFORE: {conf.options['project_name']}')
 
+    if args['config']:
+        print('CUSTOM\n')
+        conf.options['project_name'] = args['name']
+        conf.options['default'] = True
+        conf.options['config_location'] = args['config']
+        conf.options['display_options'] = args['display']
+        conf.options['color'] = args['color']
+        conf.options['clear_directory'] = args['clean']
+        conf.options['interactive'] = args['interactive']
+
+    elif args['default']:
+        print('DEFAULT\n')
+        conf.options['project_name'] = args['name']
+        conf.options['default'] = args['default']
+        conf.options['default'] = True
+        # conf.options['config_location'] = args['config']
+        conf.options['display_options'] = args['display']
+        conf.options['color'] = args['color']
+        conf.options['clear_directory'] = args['clean']
+        conf.options['interactive'] = args['interactive']
+    else:
+        # ! Weird
+        raise Exception('Weird')
+    # print(conf.options)
     return conf
 
 
-def main():
-    args = options()
-    action_taker(initialize(args))
-
-
-def action_taker(conf):
+def action_taker(args):
+    conf = initialize(args)
     writers = [
         'git',
         'setup_py',
@@ -126,121 +140,130 @@ def action_taker(conf):
     else:
         raise NotImplementedError("This license is not yet implemented")
 
-    if os.path.exists(os.path.join('.', conf.project_name)):
+    if os.path.exists(os.path.join('.', conf.options['project_name'])):
         # the file is there
         raise FileExistsError('A file with similar name exists')
-    elif os.access(os.path.dirname(os.path.join('.', conf.project_name)), os.W_OK):
+    elif os.access(os.path.dirname(os.path.join('.', conf.options['project_name'])), os.W_OK):
         # the file does not exists but write privileges are given
-        os.makedirs(os.path.join('.', conf.project_name))
+        os.makedirs(os.path.join('.', conf.options['project_name']))
         # pass
     else:
         # can not write there
         raise PermissionError('Do not have the permission to Write here.')
 
-    if conf.clear_directory:
-        if os.path.exists(os.path.join('.', conf.project_name)):
+    if conf.options['clear_directory']:
+        if os.path.exists(os.path.join('.', conf.options['project_name'])):
             # Delete
             # os.rmdir(
-            #     os.path.join('.', conf.project_name)
+            #     os.path.join('.', conf.options['project_name'])
             # )
             shutil.rmtree(
-                os.path.join('.', conf.project_name)
+                os.path.join('.', conf.options['project_name'])
             )
         else:
             # file doesn't exist. No need to bring in deletion.
             pass
 
     # ! Writing the files.
-    if not conf.default:
-        # Searching for the custom config thing.
-        # if os.path.isfile(os.path.join(conf.config_location, '.config.yaml')):
-        import yaml
-        thing = yaml.load(
-            open(
-                os.path.join(
-                    conf.config_location
-                    # '.'
-                    # '.config.yaml'
-                )
-            ),
-            Loader=yaml.Loader)
-        # print(configuration)
-        # conf = config.Config()
-        # for item in thing.keys():
-        #     if item in utils.files:
-        #         conf.all['files'][item] = thing[item]
-        #     elif item in utils.shields:
-        #         conf.all['shields']['base'].append(item)
-        #         conf.all['shields']['entity'].append(thing[item])
-        #     else:
-        #         # try:
-        #         conf.all[item] = thing[item]
+    # if not conf.options['default']:
+    #     # Searching for the custom config thing.
+    #     # if os.path.isfile(os.path.join(conf.config_location, '.config.yaml')):
+    #     import yaml
+    #     conf = utils.custom_reader('./.config.yaml')
+    print("The options chosen are as follows:")
+    print(json.dumps(conf.options, sort_keys=True, indent=4))
+    utils.writer_writer(conf)
+    # thing = yaml.load(
+    #     open(
+    #         os.path.join(
+    #             conf.config_location
+    #             # '.'
+    #             # '.config.yaml'
+    #         )
+    #     ),
+    #     Loader=yaml.Loader)
+    # print(configuration)
+    # conf = config.Config()
+    # for item in thing.keys():
+    #     if item in utils.files:
+    #         conf.all['files'][item] = thing[item]
+    #     elif item in utils.shields:
+    #         conf.all['shields']['base'].append(item)
+    #         conf.all['shields']['entity'].append(thing[item])
+    #     else:
+    #         # try:
+    #         conf.all[item] = thing[item]
 
-        # for writes in conf.all['files'].keys():
-        #     if writes == 'license':
-        #         conf.actions['default']['files'][writes](
-        #             f'./{conf.project_name}', conf.all['files']['license'])
+    # for writes in conf.all['files'].keys():
+    #     if writes == 'license':
+    #         conf.actions['default']['files'][writes](
+    #             f'./{conf.project_name}', conf.all['files']['license'])
 
-        #     try:
-        #         conf.actions['default']['files'][writes](
-        #             f'./{conf.project_name}')
-        #     except BaseException:
-        #         warnings.warn('Some error occured, clearing the folder')
-        #         shutil.rmtree(
-        #             os.path.join('.', conf.project_name)
-        #         )
-        #         # pass
+    #     try:
+    #         conf.actions['default']['files'][writes](
+    #             f'./{conf.project_name}')
+    #     except BaseException:
+    #         warnings.warn('Some error occured, clearing the folder')
+    #         shutil.rmtree(
+    #             os.path.join('.', conf.project_name)
+    #         )
+    #         # pass
 
-        #     if writes == 'setup_py':
-        #         conf.actions['default']['files'][writes](
-        #             f'./{conf.project_name}', conf.all)
+    #     if writes == 'setup_py':
+    #         conf.actions['default']['files'][writes](
+    #             f'./{conf.project_name}', conf.all)
 
-        #     if writes == 'main':
-        #         conf.actions['default']['files'][writes](
-        #             f'./{conf.project_name}', conf.all['project_name'])
-        # # try:
-        #     generate_README(os.path.join(
-        #         f'./{conf.project_name}'), shields=conf.basic['shields'])
-        else:
-            raise FileNotFoundError(
-                'config.yaml was not found in the mentioned directory.')
-        # Reading the custom config thing.
+    #     if writes == 'main':
+    #         conf.actions['default']['files'][writes](
+    #             f'./{conf.project_name}', conf.all['project_name'])
+    # # try:
+    #     generate_README(os.path.join(
+    #         f'./{conf.project_name}'), shields=conf.basic['shields'])
+    # else:
+    # raise FileNotFoundError(
+    # 'config.yaml was not found in the mentioned directory.')
+    # Reading the custom config thing.
 
-        # Writing by respecting the config.yml.
-        # raise NotImplementedError
+    # Writing by respecting the config.yml.
+    # raise NotImplementedError
 
-    if conf.default:
-        for writes in conf.options['files'].keys():
-            if writes == 'license' and conf.options['files'][writes]:
-                conf.actions[writes](
-                    f'./{conf.project_name}', conf.options['files']['license'])
+    # if conf.default:
+    #     for writes in conf.options['files'].keys():
+    #         if writes == 'license' and conf.options['files'][writes]:
+    #             conf.actions[writes](
+    #                 f'./{conf.project_name}', conf.options['files']['license'])
 
-            try:
-                conf.actions[writes](
-                    f'./{conf.project_name}')
-            except BaseException:
-                # warnings.warn('Some error occured, clearing the folder')
-                # shutil.rmtree(
-                #     os.path.join('.', conf.project_name)
-                # )
-                pass
+    #         try:
+    #             conf.actions[writes](
+    #                 f'./{conf.project_name}')
+    #         except BaseException:
+    #             # warnings.warn('Some error occured, clearing the folder')
+    #             # shutil.rmtree(
+    #             #     os.path.join('.', conf.project_name)
+    #             # )
+    #             pass
 
-            if writes == 'setup_py':
-                conf.actions[writes](
-                    f'./{conf.project_name}', conf.options)
+    #         if writes == 'setup_py':
+    #             conf.actions[writes](
+    #                 f'./{conf.project_name}', conf.options)
 
-            if writes == 'main':
-                conf.actions[writes](
-                    f'./{conf.project_name}', conf.options['project_name'])
-        # try:
-        print(conf.options)
-        generate_README(os.path.join(
-            '.', f'./{conf.project_name}'), shields=conf.options['shields'])
+    #         if writes == 'main':
+    #             conf.actions[writes](
+    #                 f'./{conf.project_name}', conf.options['project_name'])
+    # try:
+    # print(conf.options)
+    # generate_README(os.path.join(
+    #     '.', f'./{conf.project_name}'), shields=conf.options['shields'])
 
-        # print(conf.basic)
-        # except Exception as e:
-        # print(e)
-        # raise RuntimeError('There was a problem generating the README.md')
+    # print(conf.basic)
+    # except Exception as e:
+    # print(e)
+    # raise RuntimeError('There was a problem generating the README.md')
+
+
+def main():
+    args = options()
+    action_taker(args)
 
 
 def run_as_command():

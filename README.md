@@ -202,3 +202,4 @@ Example_Repo
     - [ ] Flask
     - [ ] Django
     - [ ]
+- [ ] Add support to ignore .files and temp_*.py files for shizeles.

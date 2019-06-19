@@ -58,17 +58,18 @@ def writer_appveyor(location):
 
 
 def writer_contributing(location):
-    print("writer_contributing")
+    pass
+    # print("writer_contributing")
     # raise NotImplementedError
 
 
 def writer_git(location):
-    print("writer_git")
+    pass
     # raise NotImplementedError
 
 
 def writer_readme(location):
-    print("writer_readme")
+    pass
     # raise NotImplementedError
 
 
