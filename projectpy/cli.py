@@ -87,17 +87,12 @@ def initialize(args):
             : The arguments parsed by the CLI
     '''
     conf = config.Config()
-    # print(f'BEFORE: {conf.options['project_name']}')
 
     if args['config']:
         print('CUSTOM\n')
-        conf.options['project_name'] = args['name']
-        conf.options['default'] = True
-        conf.options['config_location'] = args['config']
-        conf.options['display_options'] = args['display']
-        conf.options['color'] = args['color']
-        conf.options['clear_directory'] = args['clean']
-        conf.options['interactive'] = args['interactive']
+        print(json.dumps(utils.custom_reader(
+            args['config']).options, indent=4))
+        return utils.custom_reader(args['config'])
 
     elif args['default']:
         print('DEFAULT\n')
@@ -112,7 +107,6 @@ def initialize(args):
     else:
         # ! Weird
         raise Exception('Weird')
-    # print(conf.options)
     return conf
 
 
@@ -142,7 +136,23 @@ def action_taker(args):
 
     if os.path.exists(os.path.join('.', conf.options['project_name'])):
         # the file is there
-        raise FileExistsError('A file with similar name exists')
+
+        if conf.options['clear_directory'] is True:
+            if os.path.exists(os.path.join('.', conf.options['project_name'])) is True:
+                print('lololllloooo')
+                # Delete
+                # os.rmdir(
+                #     os.path.join('.', conf.options['project_name'])
+                # )
+                warnings.warn('Deleting the file inplace.')
+                shutil.rmtree(
+                    os.path.join('.', conf.options['project_name'])
+                )
+        else:
+            # print(os.path.exists(os.path.join(
+                # '.', conf.options['project_name'])))
+            raise FileExistsError('A file with similar name exists')
+
     elif os.access(os.path.dirname(os.path.join('.', conf.options['project_name'])), os.W_OK):
         # the file does not exists but write privileges are given
         os.makedirs(os.path.join('.', conf.options['project_name']))
@@ -151,81 +161,19 @@ def action_taker(args):
         # can not write there
         raise PermissionError('Do not have the permission to Write here.')
 
-    if conf.options['clear_directory']:
-        if os.path.exists(os.path.join('.', conf.options['project_name'])):
-            # Delete
-            # os.rmdir(
-            #     os.path.join('.', conf.options['project_name'])
-            # )
-            shutil.rmtree(
-                os.path.join('.', conf.options['project_name'])
-            )
-        else:
-            # file doesn't exist. No need to bring in deletion.
-            pass
+        # else:
+        #     # file doesn't exist. No need to bring in deletion.
+        #     pass
 
     # ! Writing the files.
-    # if not conf.options['default']:
-    #     # Searching for the custom config thing.
-    #     # if os.path.isfile(os.path.join(conf.config_location, '.config.yaml')):
-    #     import yaml
-    #     conf = utils.custom_reader('./.config.yaml')
+    if conf.options['config_location']:
+        # Searching for the custom config thing.
+        if not os.path.isfile(os.path.join(os.getcwd(), conf.options['config_location'])):
+            raise FileNotFoundError(
+                f"Cant find the config file {os.path.join(os.getcwd(), conf.options['config_location'])}")
     print("The options chosen are as follows:")
     print(json.dumps(conf.options, sort_keys=True, indent=4))
     utils.writer_writer(conf)
-    # thing = yaml.load(
-    #     open(
-    #         os.path.join(
-    #             conf.config_location
-    #             # '.'
-    #             # '.config.yaml'
-    #         )
-    #     ),
-    #     Loader=yaml.Loader)
-    # print(configuration)
-    # conf = config.Config()
-    # for item in thing.keys():
-    #     if item in utils.files:
-    #         conf.all['files'][item] = thing[item]
-    #     elif item in utils.shields:
-    #         conf.all['shields']['base'].append(item)
-    #         conf.all['shields']['entity'].append(thing[item])
-    #     else:
-    #         # try:
-    #         conf.all[item] = thing[item]
-
-    # for writes in conf.all['files'].keys():
-    #     if writes == 'license':
-    #         conf.actions['default']['files'][writes](
-    #             f'./{conf.project_name}', conf.all['files']['license'])
-
-    #     try:
-    #         conf.actions['default']['files'][writes](
-    #             f'./{conf.project_name}')
-    #     except BaseException:
-    #         warnings.warn('Some error occured, clearing the folder')
-    #         shutil.rmtree(
-    #             os.path.join('.', conf.project_name)
-    #         )
-    #         # pass
-
-    #     if writes == 'setup_py':
-    #         conf.actions['default']['files'][writes](
-    #             f'./{conf.project_name}', conf.all)
-
-    #     if writes == 'main':
-    #         conf.actions['default']['files'][writes](
-    #             f'./{conf.project_name}', conf.all['project_name'])
-    # # try:
-    #     generate_README(os.path.join(
-    #         f'./{conf.project_name}'), shields=conf.basic['shields'])
-    # else:
-    # raise FileNotFoundError(
-    # 'config.yaml was not found in the mentioned directory.')
-    # Reading the custom config thing.
-
-    # Writing by respecting the config.yml.
-    # raise NotImplementedError
 
     # if conf.default:
     #     for writes in conf.options['files'].keys():
@@ -294,13 +242,13 @@ def parser():
 
 
 def create_home_dir():
-    """Create Directory for retriever."""
+    """Create Directory for projectpy."""
     current_platform = platform.system().lower()
     if current_platform != 'windows':
         import pwd
 
-    # create the necessary directory structure for storing scripts/raw_data
-    # in the ~/.retriever directory
+    # create the necessary directory structure for storing config details
+    # in the ~/.projectpy directory
     required_dirs = [os.path.join(HOME_DIR, dirs)
                      for dirs in ['', 'config', 'history']]
     for dir in required_dirs:
@@ -308,7 +256,7 @@ def create_home_dir():
             try:
                 os.makedirs(dir)
                 if (current_platform != 'windows') and os.getenv("SUDO_USER"):
-                    # owner of .retriever should be user even when installing
+                    # owner of .projectpy should be user even when installing
                     # w/sudo
                     pw = pwd.getpwnam(os.getenv("SUDO_USER"))
                     os.chown(dir, pw.pw_uid, pw.pw_gid)

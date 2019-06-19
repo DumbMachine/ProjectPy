@@ -1,3 +1,6 @@
+import json
+
+
 class Config:
     '''
     Class to Create the Config for installation
@@ -430,6 +433,7 @@ project_description: "Working project has the following descriptions. I dont eve
 author_name: "Ratin Kumar"
 github_username: "DumbMachine"
 github_email: "ratin.kumar.2k@gmail.com"
+config_location: 'asdasdads'
 
 license: "MIT"
 git: True
@@ -441,7 +445,6 @@ interactive: False
 
 shields:
   build: "bitrise"
-  build: "not_bitrise"
   codecov: "codecov"
   analysis: "gtihub-lanugage-count"
   chat: "discord"
@@ -513,112 +516,10 @@ shields:
             # try:
             conf.options[item] = thing[item]
 
-    print(conf.options)
+    print(
+        json.dumps(conf.options, indent=4)
+    )
     return conf
 
 
-{
-    'default': True,
-    'config_location': '.',
-    'display_options': True,
-    'clear_directory': False,
-    'project_name': 'PrjectGetGPA',
-    'project_version': '0.01alpha',
-    'project_description': 'Working project has the following descriptions. I dont even remember how to write fast of this things. I have gotten so function slow.',
-    'author_name': 'Ratin Kumar',
-    'author_email': 'placeholder.com',
-    'github_username': 'DumbMachine',
-    'license': 'MIT',
-    'files': {
-        'license': 'MIT',
-        'git': True,
-        'color': True,
-        'requirements': True,
-        'tests': True,
-        'main': True,
-        'contributing': True,
-        'interactive': False,
-        'manifest': False,
-        'setup_cfg': False,
-        'setup_py': True,
-        'dockerfile': False,
-        'readme': 'markdown'},
-    'shields': {
-        'base': [
-            'chat',
-            'build',
-            'custom',
-            'license',
-            'build',
-            'codecov',
-            'analysis',
-            'chat',
-            'dependencies',
-            'size',
-            'downloads',
-            'funding',
-            'issues',
-            'license',
-            'rating',
-            'social',
-            'version',
-            'platform',
-            'monitoring',
-            'activity',
-            'other'],
-        'entity': [
-            'discord',
-            'appveyor',
-            'custom',
-            'github',
-            'not_bitrise',
-            'codecov',
-            'gtihub-lanugage-count',
-            'discord',
-            None,
-            'github-repo-size',
-            None,
-            None,
-            None,
-            'github',
-            None,
-            None,
-            'pypi',
-            None,
-            None,
-            None,
-            None]},
-    'github_email': 'ratin.kumar.2k@gmail.com'}
-
-{'default': True,
-    'config_location': '.',
-    'display_options': True,
-    'clear_directory': False,
-    'project_name': 'gayshit',
-    'project_version': '0.01alpha',
-    'project_description': 'project_descriptions',
-    'author_name': 'Ratin Kumar',
-    'author_email': 'placeholder.com',
-    'github_username': 'DumbMachine',
-    'license': 'MIT',
-    'files': {'license': 'MIT',
-              'git': True,
-              'color': True,
-              'requirements': True,
-              'tests': True,
-              'main': True,
-              'contributing': True,
-              'interactive': False,
-              'manifest': False,
-              'setup_cfg': False,
-              'setup_py': True,
-              'dockerfile': False,
-              'readme': 'markdown'},
-    'shields': {'base': ['chat',
-                         'build',
-                         'custom',
-                         'license'],
-                'entity': ['discord',
-                           'appveyor',
-                           'custom',
-                           'github']}}
+custom_reader(1)

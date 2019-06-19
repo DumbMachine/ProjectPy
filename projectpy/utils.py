@@ -1,49 +1,15 @@
 from __future__ import print_function
 
-import readline
 import os
+import readline
 import sys
+
 import yaml
 from colorama import Back, Fore, Style, init
 
+from .config import *
+import json
 init(autoreset=True)
-
-files = [
-    "license",
-    "git",
-    "color",
-    "requirements",
-    "tests",
-    "main",
-    "contributing",
-    "interactive",
-    "manifest",
-    "setup_cfg",
-    "setup_py",
-    "dockerfile",
-    "readme",
-]
-
-shields = [
-    "build",
-    "codecov",
-    "analysis",
-    "chat",
-    "dependencies",
-    "size",
-    "downloads",
-    "funding",
-    "issues",
-    "license",
-    "rating",
-    "social",
-    "version",
-    "platform",
-    "monitoring",
-    "activity",
-    "other",
-    "custom_shield",
-]
 
 
 def cprint(
@@ -90,36 +56,6 @@ def copy_files(frem, to):
     return os.system("cp -rf %s %s" % (frem, to))
 
 
-# def files(no_custom=False):
-#     '''
-#     .gitignore files
-#     '''
-#     if not no_custom:
-#         return [
-#             'template',
-#             'setup.py',
-#             'setup.cfg',
-#             'requirements.txt',
-#             'README.md',
-#             'LICENSE',
-#             '.gitignore',
-#             'optional/ci/.travis.yml',
-#             'optional/MANIFEST.ini',
-#             'optional/ci/appveyor.yml',
-#             'optional/.codecoveragerc',
-#             'optional/dockerfile',
-#             'optional/.codeclimate.yml']
-
-#     return [
-#         'template',
-#         'setup.py',
-#         'setup.cfg',
-#         'requirements.txt',
-#         'README.md',
-#         'LICENSE',
-#         '.gitignore']
-
-
 def progressBar(value, endvalue, message, bar_length=20):
 
     percent = float(value) / endvalue
@@ -144,52 +80,8 @@ def input_with_prefill(prompt, text):
 
 
 def custom_reader(location):
-    custom = '''project_name: 'PrjectGetGPA'
-project_version: 0.01alpha
-project_description: 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'
-author_name: 'Ratin Kumar'
-github_username: 'DumbMachine'
-
-default: False
-
-license: 'MIT'
-git: True
-colour: True
-interactive: True
-default: True
-git: True
-colour: True
-interactive: True
-
-setup_py: True
-setup_cfg: True
-main: True
-manifest: True
-setup.cfg: True
-docker: True
-requirements: True
-contributing: True
-readme: 'markdown'
-
-shields:
-    build: 'appveyor'
-    codecov: 'codecov'
-    analysis: 'gtihub-lanugage-count'
-    chat: 'discord'
-    dependencies:
-    size: 'github-repo-size'
-    downloads:
-    funding:
-    issues:
-    license: 'github'
-    rating:
-    social:
-    version: 'pypi'
-    platform:
-    monitoring:
-    activity:
-    other:
-'''
+    '''
+    '''
     # thing = yaml.load(custom, Loader=yaml.Loader)
     thing = yaml.load(open(location), Loader=yaml.Loader)
 
@@ -230,8 +122,7 @@ shields:
         "custom_shield",
     ]
 
-    conf = config.Config()
-    print('gay', conf.options)
+    conf = Config()
     for item in thing.keys():
         if item in files:
             conf.options['files'][item] = thing[item]
@@ -244,8 +135,7 @@ shields:
         else:
             # try:
             conf.options[item] = thing[item]
-
-    print(conf.options)
+    print('I returned from cutom_reader', json.dumps(conf.options, indent=4))
     return conf
 
 
@@ -261,12 +151,12 @@ def writer_writer(conf):
         try:
             conf.actions[writes](
                 f"./{conf.options['project_name']}")
-        except BaseException:
+        except Exception as e:
+            print(e)
             # warnings.warn('Some error occured, clearing the folder')
             # shutil.rmtree(
             #     os.path.join('.', conf.options['project_name'])
             # )
-            pass
 
         if writes == 'setup_py':
             conf.actions[writes](
@@ -276,7 +166,6 @@ def writer_writer(conf):
             conf.actions[writes](
                 f"./{conf.options['project_name']}", conf.options['project_name'])
     try:
-        print(conf.options)
         from .generator import generate_README
         generate_README(os.path.join(
             '.', f"./{conf.options['project_name']}"), shields=conf.options['shields'])

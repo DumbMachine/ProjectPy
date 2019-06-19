@@ -85,9 +85,3 @@ def writer_main(location, repo_name):
         os.makedirs(os.path.join(location, repo_name))
     open(os.path.join(os.path.join(location, repo_name),
                       '__init__.py'), 'w+').write("print('Succesfull Installation')")
-
-# writer_setup_cfg(os.getcwd())
-# writer_requriements(os.getcwd())
-# licencer(os.getcwd())
-# writer_gitignore(os.getcwd())
-# writer_setup_py(os.getcwd())

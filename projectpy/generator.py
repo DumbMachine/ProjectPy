@@ -43,6 +43,8 @@ class Shields:
                     return f"![{self.entity}]({item[self.entity]}?style={self.style})"
                 else:
                     return f".. image:: {item[self.entity]}   :alt: {self.entity}?style={self.style}"
+            else:
+                return 1
 
 
 def customShield(label='label', message='message', color='orange', mode='markdown', name='Custom Shield'):
