@@ -90,8 +90,7 @@ def initialize(args):
 
     if args['config']:
         print('CUSTOM\n')
-        print(json.dumps(utils.custom_reader(
-            args['config']).options, indent=4))
+
         return utils.custom_reader(args['config'])
 
     elif args['default']:
@@ -136,22 +135,21 @@ def action_taker(args):
 
     if os.path.exists(os.path.join('.', conf.options['project_name'])):
         # the file is there
-
-        if conf.options['clear_directory'] is True:
-            if os.path.exists(os.path.join('.', conf.options['project_name'])) is True:
-                print('lololllloooo')
-                # Delete
-                # os.rmdir(
-                #     os.path.join('.', conf.options['project_name'])
-                # )
-                warnings.warn('Deleting the file inplace.')
-                shutil.rmtree(
-                    os.path.join('.', conf.options['project_name'])
-                )
-        else:
-            # print(os.path.exists(os.path.join(
-                # '.', conf.options['project_name'])))
-            raise FileExistsError('A file with similar name exists')
+        pass
+        # if conf.options['clear_directory'] is True:
+        #     if os.path.exists(os.path.join('.', conf.options['project_name'])) is True:
+        #         # Delete
+        #         # os.rmdir(
+        #         #     os.path.join('.', conf.options['project_name'])
+        #         # )
+        #         warnings.warn('Deleting the file inplace.')
+        #         shutil.rmtree(
+        #             os.path.join('.', conf.options['project_name'])
+        #         )
+        # else:
+        #     # print(os.path.exists(os.path.join(
+        #         # '.', conf.options['project_name'])))
+        #     raise FileExistsError('A file with similar name exists')
 
     elif os.access(os.path.dirname(os.path.join('.', conf.options['project_name'])), os.W_OK):
         # the file does not exists but write privileges are given

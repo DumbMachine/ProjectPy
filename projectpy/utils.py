@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import json
 import os
 import readline
 import sys
@@ -8,7 +9,7 @@ import yaml
 from colorama import Back, Fore, Style, init
 
 from .config import *
-import json
+
 init(autoreset=True)
 
 
@@ -123,7 +124,9 @@ def custom_reader(location):
     ]
 
     conf = Config()
+    conf.options['config_location'] = location
     for item in thing.keys():
+        print(item)
         if item in files:
             conf.options['files'][item] = thing[item]
         # elif item in shields:
@@ -146,7 +149,7 @@ def writer_writer(conf):
     for writes in conf.options['files'].keys():
         if writes == 'license' and conf.options['files'][writes]:
             conf.actions[writes](
-                f"./{conf.options['project_name']}", conf.options['files']['license'])
+                location=f"./{conf.options['project_name']}", hmm=conf.options['files']['license'])
 
         try:
             conf.actions[writes](

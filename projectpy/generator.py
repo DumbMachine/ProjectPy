@@ -36,15 +36,33 @@ class Shields:
         '''
 
         '''
-        # if self.base.lower() == 'build':
         for item in d[self.base.lower()]['type']:
             if self.entity == list(item.keys())[0]:
                 if self.mode == 'markdown':
                     return f"![{self.entity}]({item[self.entity]}?style={self.style})"
                 else:
                     return f".. image:: {item[self.entity]}   :alt: {self.entity}?style={self.style}"
-            else:
-                return 1
+            else:  # * None case
+                return "shit"
+
+
+def get_shielder(base, entity, mode='markdown', style='flat'):
+    if style not in ['plastic', 'flat', 'flat-square', 'for-the-badge', 'poput', 'popout-square', 'social']:
+        raise ValueError(f"{style} is not Available")
+    else:
+        if base not in data.keys():
+            raise ValueError('This base is not in the dict')
+        else:
+            for types in data[base]['type']:
+                # print(types.keys())
+                # print(types)
+                if entity == list(types.keys())[0]:
+                    if mode == 'markdown':
+                        return f"![{entity}]({types[entity]}?style={style})"
+                    else:
+                        return f".. image:: {types[entity]}   :alt: {entity}?style={style}"
+
+    return ""
 
 
 def customShield(label='label', message='message', color='orange', mode='markdown', name='Custom Shield'):
@@ -142,8 +160,11 @@ def generate_README(location, shields):
                         readme.write(" ")
                 else:
                     if shields['entity'][count]:
-                        readme.write(Shields(
-                            base=shields['base'][count], entity=shields['entity'][count]).get_shield())
+                        # readme.write(Shields(
+                            # base=shields['base'][count], entity=shields['entity'][count]).get_shield())
+                        readme.write(get_shielder(
+                            base=shields['base'][count],
+                            entity=shields['entity'][count]))
                         readme.write(" ")
 
     # readme.write(Shields(base='build', entity='appveyor').get_shield())

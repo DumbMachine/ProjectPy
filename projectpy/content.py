@@ -889,7 +889,7 @@ data = {
                    "github-manifest-version": "https://img.shields.io/github/manifest-json/v/:user/:repo.svg"
                },
             {
-                   "github-manifest-version": "https://img.shields.io/github/manifest-json/v/:user/:repo/:branch.svg"
+                   "github-manifest-version-(branch)": "https://img.shields.io/github/manifest-json/v/:user/:repo/:branch.svg"
                },
             {
                    "github-package.json-version": "https://img.shields.io/github/package-json/v/:user/:repo.svg"
