@@ -11,21 +11,10 @@ def get_shielder(entity, mode='markdown', style='flat'):
         if entity not in data.keys():
             raise ValueError(f'This shield {entity} is not in the dict')
         else:
-            # for shield in data.keys():
-                # if entity == data[shield]:
             if mode == 'markdown':
                 return f"![{entity}]({data[entity]}?style={style})"
             else:
                 return f".. image:: {data[entity]}   :alt: {entity}?style={style}"
-            # for types in data[base]['type']:
-            #     # print(types.keys())
-            #     # print(types)
-            #     if entity == list(types.keys())[0]:
-            #         if mode == 'markdown':
-            #             return f"![{entity}]({types[entity]}?style={style})"
-            #         else:
-            #             return f".. image:: {types[entity]}   :alt: {entity}?style={style}"
-
     return ""
 
 

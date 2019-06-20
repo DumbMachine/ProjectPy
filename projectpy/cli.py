@@ -89,6 +89,9 @@ def initialize(args):
     '''
     conf = config.Config()
 
+    if args['interactive']:
+        return questions()
+
     if args['config']:
         print('CUSTOM\n')
 
@@ -160,10 +163,6 @@ def action_taker(args):
         # can not write there
         raise PermissionError('Do not have the permission to Write here.')
 
-        # else:
-        #     # file doesn't exist. No need to bring in deletion.
-        #     pass
-
     # ! Writing the files.
     if conf.options['config_location']:
         # Searching for the custom config thing.
@@ -188,44 +187,61 @@ def questions():
     emojis = ['🚀', '✅', '🏠', '📘', '📦', '💡', '📝', '👤', '👤', '📃', '🗕', 'ℹ']
     answers = {}
     questions_to_ask = [
-        ['    Project Name:  ', '', conf.options['project_name']],
-        ['    Project Version:  ', '0.01', conf.options['project_version']],
-        ['    Project Description:  ', '', conf.options['project_description']],
-        ['    Author Name:  ', '', conf.options['author_name']],
-        ['    Github Username:  ', '', conf.options['github_username']],
-        ['    License Type:   ', 'mit', conf.options['license']],
+        ['    Project Name:  ', '', 'project_name'],
+        ['    Project Version:  ', '0.01', 'project_version'],
+        ['    Project Description:  ', '', 'project_description'],
+        ['    Author Name:  ', '', 'author_name'],
+        ['    Github Username:  ', '', 'github_username'],
+        ['    License Type:   ', 'mit', 'license'],
         ['    Minimal Installation? (Y/N):   ', '',
-         conf.options['default']],
+         'default'],
 
         ['    Custom Config Location [Leave empty if not present]:  ',
-            'config.yaml', conf.options['config_location']],
-        ['    Github Email:  ', '', conf.options['author_email']],
-        ['    Git Repository (Y/n): ', '', conf.options['files']['git']],
+            'config.yaml', 'config_location'],
+        ['    Github Email:  ', '', 'author_email'],
+        ['    Git Repository (Y/n): ', '', 'git'],
         ['    Contributing.md (Y/n): ', '',
-         conf.options['files']['contributing']],
+         'contributing'],
         ['    Setup.cfg (Y/n): ', '', conf.options['files']['setup_cfg']],
         ['    Tests folder (Y/n): ', 'yes', conf.options['files']['tests']],
         ['    Conda feed stock (Y/n): ', '', conf.options['files']['conda']],
-        ['    Shields? (Y/n)  T: ', 'YES'],
+        ['    Shields? (Y/n)  T: ', 'YES', emojis],
+
         ['                    |-license  (Y/n): ',
-         'mit', conf.options['shields']['base'].append('license')],
+         'mit', ''],
+
         ['                    |-Builds   (Y/n): ',
-         'appveyor', conf.options['shields']['base'].append('license')],
+         'appveyor', ''],
+
         ['                    |-version  (Y/n): ',
-         'pypi', conf.options['shields']['base'].append('license')],
+         'pypi', ''],
+
         ['                    |-Issues   (Y/n): ',
-         'github-issues', conf.options['shields']['base'].append('license')],
+         'github-issues', ''],
+
         ['                    |-PRs      (Y/n): ',
-         'github-pull-requests', conf.options['shields']['base'].append('license')],
+         'github-pull-requests', ''],
     ]
+    conf.options['default'] = False
     for question, answer, something in questions_to_ask:
         answers[question] = str(
             utils.input_with_prefill(question, answer)).lower()
-
-        if question == questions_to_ask[6][0] and answers[question] == 'y':
+        # something = answer
+        if [question, answer, something] in questions_to_ask[15:]:
+            conf.options['shields'].append(answers[question])
+        elif question == questions_to_ask[6][0] and answers[question] == 'y':
             break
-    print(json.dumps(answers, indent=2))
-    # print(json.dumps(conf.options, indent=2))
+        elif question == questions_to_ask[10][0] or question == questions_to_ask[9][0]:
+            conf.options['files'][something] = answers[question]
+        elif question == questions_to_ask[14][0]:
+            pass
+        else:
+            # try:
+            conf.options[something] = answers[question]
+            # except:
+            # raise Exception(f"{question}")
+    # print(json.dumps(answers, indent=2))
+    print(json.dumps(conf.options, indent=2))
     print(
         '''
     ______________________________
@@ -237,8 +253,7 @@ def questions():
     ------------------------------
 '''
     )
-
-
+    return conf
 # questions()
 
 
