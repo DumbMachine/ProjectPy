@@ -1,49 +1,20 @@
 from __future__ import print_function
 
-import readline
+import json
 import os
+import readline
 import sys
+
 import yaml
 from colorama import Back, Fore, Style, init
+from loguru import logger
+
+from .config import *
 
 init(autoreset=True)
 
-files = [
-    "license",
-    "git",
-    "color",
-    "requirements",
-    "tests",
-    "main",
-    "contributing",
-    "interactive",
-    "manifest",
-    "setup_cfg",
-    "setup_py",
-    "dockerfile",
-    "readme",
-]
-
-shields = [
-    "build",
-    "codecov",
-    "analysis",
-    "chat",
-    "dependencies",
-    "size",
-    "downloads",
-    "funding",
-    "issues",
-    "license",
-    "rating",
-    "social",
-    "version",
-    "platform",
-    "monitoring",
-    "activity",
-    "other",
-    "custom_shield",
-]
+logger.add(sys.stderr, format="{time} {level} {message}",
+           filter="my_module", level="INFO")
 
 
 def cprint(
@@ -85,41 +56,6 @@ def cprint(
         return
 
 
-def copy_files(frem, to):
-    import os
-    return os.system("cp -rf %s %s" % (frem, to))
-
-
-# def files(no_custom=False):
-#     '''
-#     .gitignore files
-#     '''
-#     if not no_custom:
-#         return [
-#             'template',
-#             'setup.py',
-#             'setup.cfg',
-#             'requirements.txt',
-#             'README.md',
-#             'LICENSE',
-#             '.gitignore',
-#             'optional/ci/.travis.yml',
-#             'optional/MANIFEST.ini',
-#             'optional/ci/appveyor.yml',
-#             'optional/.codecoveragerc',
-#             'optional/dockerfile',
-#             'optional/.codeclimate.yml']
-
-#     return [
-#         'template',
-#         'setup.py',
-#         'setup.cfg',
-#         'requirements.txt',
-#         'README.md',
-#         'LICENSE',
-#         '.gitignore']
-
-
 def progressBar(value, endvalue, message, bar_length=20):
 
     percent = float(value) / endvalue
@@ -144,53 +80,10 @@ def input_with_prefill(prompt, text):
 
 
 def custom_reader(location):
-    custom = '''project_name: 'PrjectGetGPA'
-project_version: 0.01alpha
-project_description: 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'
-author_name: 'Ratin Kumar'
-github_username: 'DumbMachine'
-
-default: False
-
-license: 'MIT'
-git: True
-colour: True
-interactive: False
-default: False
-license: 'MIT'
-git: True
-colour: True
-interactive: False
-
-setup_py: True
-setup_cfg: True
-main: True
-manifest: False
-setup.cfg: False
-docker: False
-requirements: True
-contributing: True
-readme: 'markdown'
-
-build: 'appveyor'
-codecov: 'codecov'
-analysis: 'gtihub-lanugage-count'
-chat: 'discord'
-dependencies:
-size: 'github-repo-size'
-downloads:
-funding:
-issues:
-license: 'github'
-rating:
-social:
-version: 'pypi'
-platform:
-monitoring:
-activity:
-other:
-'''
-    thing = yaml.load(custom, Loader=yaml.Loader)
+    '''
+    '''
+    # thing = yaml.load(custom, Loader=yaml.Loader)
+    thing = yaml.load(open(location), Loader=yaml.Loader)
 
     files = [
         "license",
@@ -230,81 +123,63 @@ other:
     ]
 
     conf = Config()
+    conf.options['config_location'] = location
     for item in thing.keys():
         if item in files:
-            conf.all['files'][item] = thing[item]
-        elif item in shields:
-            conf.all['shields']['base'].append(item)
-            conf.all['shields']['entity'].append(thing[item])
+            conf.options['files'][item] = thing[item]
+        elif item == 'shields':
+            for small_item in thing[item].keys():
+                conf.options['shields']['base'].append(small_item)
+                conf.options['shields']['entity'].append(
+                    thing[item][small_item])
         else:
             # try:
-            conf.all[item] = thing[item]
-
-    print(conf.all)
-    return conf.all
+            conf.options[item] = thing[item]
+    return conf
 
 
-# {
-#     'default': False,
-#     'config_location': '.',
-#     'display_options': True,
-#     'clear_directory': False,
-#     'project_name': 'PrjectGetGPA',
-#     'project_version': '0.01alpha',
-#     'project_description': 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.',
-#     'author_name': 'Ratin Kumar',
-#     'author_email': 'placeholder.com',
-#     'github_username': 'DumbMachine',
-#     'license': 'MIT',
-#     'files': {
-#         'license': 'github',
-#         'git': True,
-#         'color': True,
-#         'requirements': True,
-#         'tests': True,
-#         'main': True,
-#         'contributing': True,
-#         'interactive': False,
-#         'manifest': False,
-#         'setup_cfg': True,
-#         'setup_py': True,
-#         'dockerfile': False,
-#         'readme': 'markdown'},
-#     'shields': {
-#         'base': [
-#             'build',
-#             'codecov',
-#             'analysis',
-#             'chat',
-#             'dependencies',
-#             'size',
-#             'downloads',
-#             'funding',
-#             'issues',
-#             'rating',
-#             'social',
-#             'version',
-#             'platform',
-#             'monitoring',
-#             'activity',
-#             'other'],
-#         'entity': [
-#             'appveyor',
-#             'codecov',
-#             'gtihub-lanugage-count',
-#             'discord',
-#             None,
-#             'github-repo-size',
-#             None,
-#             None,
-#             None,
-#             None,
-#             None,
-#             'pypi',
-#             None,
-#             None,
-#             None,
-#             None]},
-#     'colour': True,
-#     'setup.cfg': False,
-#     'docker': False}
+def writer_writer(conf):
+    '''
+    Used to write shyat
+    '''
+    for writes in conf.options['files'].keys():
+        if writes == 'license' and conf.options['files'][writes]:
+            conf.actions[writes](
+                location=f"./{conf.options['project_name']}",
+                license_type=conf.options['files']['license'])
+
+        elif writes == 'setup_py':
+            conf.actions[writes](
+                f"./{conf.options['project_name']}", conf.options)
+
+        elif writes == 'main':
+            conf.actions[writes](
+                f"./{conf.options['project_name']}", conf.options['project_name'])
+
+        elif writes == 'manifest' or writes == 'dockerfile':
+            conf.actions[writes](
+                f"./{conf.options['project_name']}", name=conf.options['project_name']
+            )
+
+        elif writes == 'color' or writes == 'interactive':
+            continue
+
+        elif writes == 'git':
+            conf.actions[writes](f"./{conf.options['project_name']}")
+
+        else:
+            try:
+                conf.actions[writes](
+                    f"./{conf.options['project_name']}")
+            except Exception as e:
+                print(
+                    f"The following exception occured while doing something\n{e}")
+                pass
+    try:
+        from .generator import generate_README
+        generate_README(os.path.join(
+            '.', f"./{conf.options['project_name']}"), shields=conf.options['shields'])
+
+    except Exception as e:
+        print(e)
+        raise RuntimeError('There was a problem generating the README.md')
