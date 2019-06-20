@@ -1,4 +1,5 @@
-# from .writer import *
+import yaml
+import json
 
 
 class Config:
@@ -21,39 +22,49 @@ class Config:
     gitignore:
     contributing:
     '''
-    #  * GITHUB/GIT data
-    # username = None
-    # usermail = None
 
-    #  ! Settings for Template/Repo
-    # REPO_NAME = None
-    # git = True
-    # docker = False
-    # color = True
-    # requirements = True
-    # manifest = None
-    # " ci = None  # "?('Tox','Jenkins','TravisCI')
+    licenses = ['mit', 'agpl3', 'apache2', 'gnu2',
+                'gnugpl3', 'gpl3', 'lgpl3', 'mpl2', 'unilicense']
 
-    # readme = 'markdown'
-    # license = 'unilicense'
-    # gitignore = True
-    # contributing = False
-    # interactive = False
+    basic_files = [
+        "license",
+        "git",
+        "color",
+        "requirements",
+        "tests",
+        "main",
+        "contributing",
+        "setup_py",
+        "readme",
+    ]
 
-    # ? Boolean Variables
-    default = False
+    not_basic_files = [
+        "license",
+        "git",
+        "color",
+        "requirements",
+        "tests",
+        "main",
+        "contributing",
+        "interactive",
+        "manifest",
+        "setup_cfg",
+        "setup_py",
+        "dockerfile",
+        "readme",
+    ]
 
-    basic = dict([
+    options = dict([
         # ! Miscellenous options
         ("default", True),
-        ("config_location", '.'),
+        ("config_location", None),
         ("display_options", True),
-        ("clear_directory", False),
+        ("clear_directory", True),
 
         # ! Project Details
-        ("project_name", 'PrjectGetGPA'),
+        ("project_name", 'gayshit'),
         ("project_version", '0.01alpha'),
-        ("project_description", 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'),
+        ("project_description", 'project_descriptions'),
         ("author_name", 'Ratin Kumar'),
         ("author_email", 'placeholder.com'),
         ("github_username", 'DumbMachine'),
@@ -61,7 +72,7 @@ class Config:
 
         # ! Repo related options
         ('files', dict([
-            ("license", 'MIT'),
+            ("license", 'unilicense'),
             ("git", True),
             ("color", True),
             ("requirements", True),
@@ -78,12 +89,12 @@ class Config:
 
         # ! Shields
         ('shields', dict([
-            ("base", []),
-            ("entity", []),
+            ("base", ['chat', 'build', 'custom', 'license']),
+            ("entity", ['discord', 'appveyor', 'custom', 'github']),
         ]))
     ])
 
-    all = dict([
+    actions = dict([
         # ! Miscellenous options
         ("default", True),
         ("config_location", '.'),
@@ -97,179 +108,83 @@ class Config:
         ("author_name", 'Ratin Kumar'),
         ("author_email", 'placeholder.com'),
         ("github_username", 'DumbMachine'),
-        ("license", 'MIT'),
 
         # ! Repo related options
-        ('files', dict([
-            ("license", 'MIT'),
-            ("git", True),
-            ("color", True),
-            ("requirements", True),
-            ("tests", True),
-            ("main", True),
-            ("contributing", True),
-            ("interactive", False),
-            ("manifest", False),
-            ("setup_cfg", False),
-            ("setup_py", True),
-            ("dockerfile", False),
-            ("readme", 'markdown'),
-        ])),
-
-        # ! Shields
-        ('shields', dict([
-            ("base", []),
-            ("entity", []),
-        ]))
+        ("license", 'writer_licence'),
+        ("git", 'writer_git'),
+        ("requirements", 'writer_requriements'),
+        ("readme", 'writer_readme'),
+        ("contributing", 'writer_contributing'),
+        ("manifest", 'writer_manifest'),
+        ("setup_cfg", 'writer_setup_cfg'),
+        ("setup_py", 'writer_setup_py'),
+        ("dockerfile", 'writer_dockerfile'),
+        ('gitignore', 'writer_gitignore'),
+        ('tests', 'writer_tests'),
+        ('main', 'writer_main'),
     ])
 
-    # custom = read from YAML
-    # ! Miscellenous options
-    # default = True
-    config_location = '.'
-    display_options = True
-    clear_directory = False
 
-    # ! Project Details
-    project_name = 'PrjectGetGPA'
-    project_version = '0.01alpha'
-    project_description = 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'
-    author_name = 'Ratin Kumar'
-    author_email = 'placeholder.com'
-    github_username = 'DumbMachine'
+def custom_reader(location):
+    '''
+    '''
+    # thing = yaml.load(custom, Loader=yaml.Loader)
+    thing = yaml.load(open(location), Loader=yaml.Loader)
 
-    # ! Repo related options
-    license = 'MIT'
-    git = True
-    color = True
-    requirements = True
-    readme = 'markdown'
-    contributing = True
-    interactive = False
-    manifest = False
-    setup_cfg = False
-    dockerfile = False
+    files = [
+        "license",
+        "git",
+        "color",
+        "requirements",
+        "tests",
+        "main",
+        "contributing",
+        "interactive",
+        "manifest",
+        "setup_cfg",
+        "setup_py",
+        "dockerfile",
+        "readme",
+    ]
 
-    # ! Shields Related Options
-    shields = {
-        "build": 'appveyor',
-        "codecov": 'codecov',
-        "analysis": 'gtihub-lanugage-count',
-        "chat": 'discord',
-        "dependencies": None,
-        "size": 'github-repo-size',
-        "downloads": None,
-        "funding": None,
-        "issues": None,
-        "license": 'github',
-        "rating": None,
-        "social": None,
-        "version": 'pypi',
-        "platform": None,
-        "monitoring": None,
-        "activity": None,
-        "other": None,
-        "custom_shield": False,
-    }
+    shields = [
+        "build",
+        "codecov",
+        "analysis",
+        "chat",
+        "dependencies",
+        "size",
+        "downloads",
+        "funding",
+        "issues",
+        "license",
+        "rating",
+        "social",
+        "version",
+        "platform",
+        "monitoring",
+        "activity",
+        "other",
+        "custom_shield",
+    ]
 
-    actions = {
-        'default': {
-            'files': {
-                'license': 'writer_licence',
-                'git': 'writer_git',
-                'color': True,
-                'requirements': 'writer_requriements',
-                'readme': 'writer_readme',
-                'contributing': 'writer_contributing',
-                'interactive': False,
-                'manifest': 'writer_manifest',
-                'setup_cfg': 'writer_setup_cfg',
-                'dockerfile': 'writer_dockerfile',
-                'setup_py': 'writer_setup_py',
-                'gitignore': 'writer_gitignore',
-                'tests': 'writer_tests',
-                'main': 'writer_main',
-            }
-        }
-    }
+    conf = Config()
+    conf.options['config_location'] = location
+    for item in thing.keys():
+        print(item)
+        if item in files:
+            conf.options['files'][item] = thing[item]
+        # elif item in shields:
+        elif item == 'shields':
+            for small_item in thing[item].keys():
+                conf.options['shields']['base'].append(small_item)
+                conf.options['shields']['entity'].append(
+                    thing[item][small_item])
+        else:
+            # try:
+            conf.options[item] = thing[item]
+    print('I returned from cutom_reader', json.dumps(conf.options, indent=4))
+    return conf
 
-    # actions = dict([
 
-    #     ('basic', dict([
-    #         # ! Miscellenous options
-    #         ("default", True),
-    #         ("config_location", '.'),
-    #         ("display_options", True),
-    #         ("clear_directory", False),
-
-    #         # ! Project Details
-    #         ("project_name", 'PrjectGetGPA'),
-    #         ("project_version", '0.01alpha'),
-    #         ("project_description", 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.'),
-    #         ("author_name", 'Ratin Kumar'),
-    #         ("author_email", 'placeholder.com'),
-    #         ("github_username", 'DumbMachine'),
-
-    #         # ! Repo related options
-    #         ("license", writer_licence),
-    #         ("git", writer_git),
-    #         ("requirements", writer_requriements),
-    #         ("readme", writer_readme),
-    #         ("contributing", writer_contributing),
-    #         ("manifest", writer_manifest),
-    #         ("setup_cfg", writer_setup_cfg),
-    #         ("setup_py", writer_setup_py),
-    #         ("dockerfile", writer_dockerfile),
-    #     ]))
-    # ])
-
-    #     # ! Miscellenous options
-    #     # default: True,
-    #     config_location: "Use this in writer",
-    #     # display_options: True,
-    #     # clear_directory: False,
-
-    #     # # ! Project Details
-    #     # project_name: 'PrjectGetGPA',
-    #     # project_version: '0.01alpha',
-    #     # project_description: 'Working project has the following descriptions. I dont even remember                                       how to write fast of this things. I have gotten so function slow.',
-    #     # author_name: 'Ratin Kumar',
-    #     # author_email: "placeholder.com",
-    #     # github_username: 'DumbMachine',
-
-    #     # ! Repo related options
-    #     license: writer_licence,
-    #     git: writer_git,
-    #     # color: True,
-    #     requirements: writer_requriements,
-    #     readme: writer_readme,
-    #     contributing: writer_contributing,
-    #     # interactive: False,
-    #     manifest: writer_manifest,
-    #     setup_cfg: writer_setup_cfg,
-    #     dockerfile: writer_dockerfile,
-    #     setup_py: writer_setup_py,
-    #     gitignore: writer_gitignore,
-
-    #     # # ! Shields Related Options
-    #     # shields: {
-    #     #     "build": 'appveyor',
-    #     #     "codecov": 'codecov',
-    #     #     "analysis": 'gtihub-lanugage-count',
-    #     #     "chat": 'discord',
-    #     #     "dependencies": None,
-    #     #     "size": 'github-repo-size',
-    #     #     "downloads": None,
-    #     #     "funding": None,
-    #     #     "issues": None,
-    #     #     "license": 'github',
-    #     #     "rating": None,
-    #     #     "social": None,
-    #     #     "version": 'pypi',
-    #     #     "platform": None,
-    #     #     "monitoring": None,
-    #     #     "activity": None,
-    #     #     "other": None,
-    #     #     "custom_shield": False
-    #     # }
-    # }
+custom_reader('./.config.yaml')
