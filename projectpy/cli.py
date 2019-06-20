@@ -11,6 +11,7 @@ import warnings
 from colorama import Fore, init
 
 from . import config, utils
+from .config import Config
 from .generator import generate_README
 from .writer import *
 
@@ -169,42 +170,8 @@ def action_taker(args):
         if not os.path.isfile(os.path.join(os.getcwd(), conf.options['config_location'])):
             raise FileNotFoundError(
                 f"Cant find the config file {os.path.join(os.getcwd(), conf.options['config_location'])}")
-    # print("The options chosen are as follows:")
-    # print(json.dumps(conf.options, sort_keys=True, indent=4))
+
     utils.writer_writer(conf)
-
-    # if conf.default:
-    #     for writes in conf.options['files'].keys():
-    #         if writes == 'license' and conf.options['files'][writes]:
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}', conf.options['files']['license'])
-
-    #         try:
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}')
-    #         except BaseException:
-    #             # warnings.warn('Some error occured, clearing the folder')
-    #             # shutil.rmtree(
-    #             #     os.path.join('.', conf.project_name)
-    #             # )
-    #             pass
-
-    #         if writes == 'setup_py':
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}', conf.options)
-
-    #         if writes == 'main':
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}', conf.options['project_name'])
-    # try:
-    # print(conf.options)
-    # generate_README(os.path.join(
-    #     '.', f'./{conf.project_name}'), shields=conf.options['shields'])
-
-    # print(conf.basic)
-    # except Exception as e:
-    # print(e)
-    # raise RuntimeError('There was a problem generating the README.md')
 
 
 def main():
@@ -217,22 +184,62 @@ def run_as_command():
 
 
 def questions():
+    conf = Config()
+    emojis = ['🚀', '✅', '🏠', '📘', '📦', '💡', '📝', '👤', '👤', '📃', '🗕', 'ℹ']
     answers = {}
     questions_to_ask = [
-        'Project Name:',
-        'Project Version:',
-        'Project Description:',
-        'Author Name:',
-        'Github Username:',
-        'License Type: ',
-        'Minimal Installation? (Y/N): ',
+        ['    Project Name:  ', '', conf.options['project_name']],
+        ['    Project Version:  ', '0.01', conf.options['project_version']],
+        ['    Project Description:  ', '', conf.options['project_description']],
+        ['    Author Name:  ', '', conf.options['author_name']],
+        ['    Github Username:  ', '', conf.options['github_username']],
+        ['    License Type:   ', 'mit', conf.options['license']],
+        ['    Minimal Installation? (Y/N):   ', '',
+         conf.options['default']],
 
-        'Custom Config Location [Leave empty if not present]:'
+        ['    Custom Config Location [Leave empty if not present]:  ',
+            'config.yaml', conf.options['config_location']],
+        ['    Github Email:  ', '', conf.options['author_email']],
+        ['    Git Repository (Y/n): ', '', conf.options['files']['git']],
+        ['    Contributing.md (Y/n): ', '',
+         conf.options['files']['contributing']],
+        ['    Setup.cfg (Y/n): ', '', conf.options['files']['setup_cfg']],
+        ['    Tests folder (Y/n): ', 'yes', conf.options['files']['tests']],
+        ['    Conda feed stock (Y/n): ', '', conf.options['files']['conda']],
+        ['    Shields? (Y/n)  T: ', 'YES'],
+        ['                    |-license  (Y/n): ',
+         'mit', conf.options['shields']['base'].append('license')],
+        ['                    |-Builds   (Y/n): ',
+         'appveyor', conf.options['shields']['base'].append('license')],
+        ['                    |-version  (Y/n): ',
+         'pypi', conf.options['shields']['base'].append('license')],
+        ['                    |-Issues   (Y/n): ',
+         'github-issues', conf.options['shields']['base'].append('license')],
+        ['                    |-PRs      (Y/n): ',
+         'github-pull-requests', conf.options['shields']['base'].append('license')],
     ]
-    for question in questions_to_ask:
-        answers[question] = str(input(question))
+    for question, answer, something in questions_to_ask:
+        answers[question] = str(
+            utils.input_with_prefill(question, answer)).lower()
 
-    print(answers)
+        if question == questions_to_ask[6][0] and answers[question] == 'y':
+            break
+    print(json.dumps(answers, indent=2))
+    # print(json.dumps(conf.options, indent=2))
+    print(
+        '''
+    ______________________________
+    |                            |
+    | Generation was successful  |
+    | -------------------------  |
+    | $ cd repo_name             |
+    | $ python setup.py install  |
+    ------------------------------
+'''
+    )
+
+
+# questions()
 
 
 def parser():
