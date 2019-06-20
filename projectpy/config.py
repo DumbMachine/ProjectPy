@@ -112,7 +112,7 @@ class Config:
         ("license", writer_licence),
         ("git", writer_git),
         ("requirements", writer_requriements),
-        ("readme", writer_readme),
+        ("readme", writer_blank),
         ("contributing", writer_contributing),
         ("manifest", writer_manifest),
         ("setup_cfg", writer_setup_cfg),

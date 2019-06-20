@@ -1,6 +1,11 @@
 import os
 import sys
 from .content import Content
+import subprocess
+
+
+def writer_blank(location):
+    pass
 
 
 def writer_gitignore(location):
@@ -12,11 +17,10 @@ def writer_setup_py(location, data):
          'w+').write(Content.setup_py.format_map(data))
 
 
-def writer_licence(location, hmm):
-    # for licenze in Content.license.keys():
+def writer_licence(location, license_type):
     try:
         open(os.path.join(
-            location, f'LICENSE'), 'w+').write(Content.license[hmm.lower()])
+            location, f'LICENSE'), 'w+').write(Content.license[license_type.lower()])
     except:
         raise NotImplementedError(
             f"Given {hmm.lower()} license is not implemented.")
@@ -30,8 +34,9 @@ def writer_setup_cfg(location):
     open(os.path.join(location, 'setup.cfg'), 'w+').write(Content.setup_cfg)
 
 
-def writer_dockerfile(location):
-    open(os.path.join(location, 'dockerfile'), 'w+').write(Content.setup_cfg)
+def writer_dockerfile(location, name):
+    open(os.path.join(location, 'dockerfile'),
+         'w+').write(Content.dockerfile.format(name))
 
 
 def writer_isort(location):
@@ -42,9 +47,9 @@ def writer_black(location):
     open(os.path.join(location, 'black.'), 'w+').write(Content.setup_cfg)
 
 
-def writer_manifest(location):
+def writer_manifest(location, name):
     open(os.path.join(location, 'MANIFEST.ini'),
-         'w+').write(Content.setup_cfg)
+         'w+').write(Content.manifest.format(name))
 
 
 def writer_travis(location):
@@ -58,19 +63,18 @@ def writer_appveyor(location):
 
 
 def writer_contributing(location):
-    pass
-    # print("writer_contributing")
-    # raise NotImplementedError
+    open(os.path.join(location, 'appveyor.yml'),
+         'w+').write(Content.contributing)
 
 
 def writer_git(location):
-    pass
-    # raise NotImplementedError
-
-
-def writer_readme(location):
-    pass
-    # raise NotImplementedError
+    # os.system(f"git init {location}")
+    subprocess.Popen(f"git init {location}",
+                     shell=True, stdout=subprocess.PIPE)
+    # p = subprocess.Popen(["git", "init", f"{location}"], shell=True,
+    #                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    # p.wait()
+    # print(p.stdout)
 
 
 def writer_tests(location):
@@ -85,3 +89,10 @@ def writer_main(location, repo_name):
         os.makedirs(os.path.join(location, repo_name))
     open(os.path.join(os.path.join(location, repo_name),
                       '__init__.py'), 'w+').write("print('Succesfull Installation')")
+
+
+def big_writer(location, data):
+    '''
+    Responsible for writing the following files:
+    ['dockerfile', 'LICENSE', 'MANIFEST.in', 'README.md', 'requirements.txt', 'setup.cfg', 'setup.py']
+    '''

@@ -31,7 +31,7 @@ def options():
                                        =========================
                                        '''))
 
-    ap.add_argument("-n", "--name", required=True, help="Name of the project")
+    ap.add_argument("-n", "--name", required=False, help="Name of the project")
 
     ap.add_argument(
         "-d",
@@ -169,8 +169,8 @@ def action_taker(args):
         if not os.path.isfile(os.path.join(os.getcwd(), conf.options['config_location'])):
             raise FileNotFoundError(
                 f"Cant find the config file {os.path.join(os.getcwd(), conf.options['config_location'])}")
-    print("The options chosen are as follows:")
-    print(json.dumps(conf.options, sort_keys=True, indent=4))
+    # print("The options chosen are as follows:")
+    # print(json.dumps(conf.options, sort_keys=True, indent=4))
     utils.writer_writer(conf)
 
     # if conf.default:

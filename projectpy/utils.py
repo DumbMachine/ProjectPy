@@ -7,10 +7,14 @@ import sys
 
 import yaml
 from colorama import Back, Fore, Style, init
+from loguru import logger
 
 from .config import *
 
 init(autoreset=True)
+
+logger.add(sys.stderr, format="{time} {level} {message}",
+           filter="my_module", level="INFO")
 
 
 def cprint(
@@ -50,11 +54,6 @@ def cprint(
         print(Fore.BLUE + "%18s" % ("||"), end="\n")
         print("--------------------------------------------------------------------------")
         return
-
-
-def copy_files(frem, to):
-    import os
-    return os.system("cp -rf %s %s" % (frem, to))
 
 
 def progressBar(value, endvalue, message, bar_length=20):
@@ -126,10 +125,8 @@ def custom_reader(location):
     conf = Config()
     conf.options['config_location'] = location
     for item in thing.keys():
-        print(item)
         if item in files:
             conf.options['files'][item] = thing[item]
-        # elif item in shields:
         elif item == 'shields':
             for small_item in thing[item].keys():
                 conf.options['shields']['base'].append(small_item)
@@ -138,7 +135,6 @@ def custom_reader(location):
         else:
             # try:
             conf.options[item] = thing[item]
-    print('I returned from cutom_reader', json.dumps(conf.options, indent=4))
     return conf
 
 
@@ -149,25 +145,36 @@ def writer_writer(conf):
     for writes in conf.options['files'].keys():
         if writes == 'license' and conf.options['files'][writes]:
             conf.actions[writes](
-                location=f"./{conf.options['project_name']}", hmm=conf.options['files']['license'])
+                location=f"./{conf.options['project_name']}",
+                license_type=conf.options['files']['license'])
 
-        try:
-            conf.actions[writes](
-                f"./{conf.options['project_name']}")
-        except Exception as e:
-            print(e)
-            # warnings.warn('Some error occured, clearing the folder')
-            # shutil.rmtree(
-            #     os.path.join('.', conf.options['project_name'])
-            # )
-
-        if writes == 'setup_py':
+        elif writes == 'setup_py':
             conf.actions[writes](
                 f"./{conf.options['project_name']}", conf.options)
 
-        if writes == 'main':
+        elif writes == 'main':
             conf.actions[writes](
                 f"./{conf.options['project_name']}", conf.options['project_name'])
+
+        elif writes == 'manifest' or writes == 'dockerfile':
+            conf.actions[writes](
+                f"./{conf.options['project_name']}", name=conf.options['project_name']
+            )
+
+        elif writes == 'color' or writes == 'interactive':
+            continue
+
+        elif writes == 'git':
+            conf.actions[writes](f"./{conf.options['project_name']}")
+
+        else:
+            try:
+                conf.actions[writes](
+                    f"./{conf.options['project_name']}")
+            except Exception as e:
+                print(
+                    f"The following exception occured while doing something\n{e}")
+                pass
     try:
         from .generator import generate_README
         generate_README(os.path.join(
