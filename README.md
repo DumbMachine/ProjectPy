@@ -1,8 +1,8 @@
-# 🔴 THIS DOCUMENTATION IS WIP and will be completed soon.
-
 ![image](https://user-images.githubusercontent.com/23381512/58745622-a0c55000-8470-11e9-803d-98048a386ce9.png)
 
 # create-python-project
+
+[![HitCount](http://hits.dwyl.io/DumbMachine/projectpy.svg)](http://hits.dwyl.io/DumbMachine/projectpy)
 
 [![Downloads](https://pepy.tech/badge/projectpy)](https://pepy.tech/project/projectpy)
 [![Build status](https://ci.appveyor.com/api/projects/status/r73kob46x7rv690y?svg=true)](https://ci.appveyor.com/project/DumbMachine/create-python-project) [![Build Status](https://travis-ci.org/DumbMachine/ProjectPy.svg?branch=master)](https://travis-ci.org/DumbMachine/ProjectPy) [![Maintainability](https://api.codeclimate.com/v1/badges/3fa9da9a5e4e670d56bf/maintainability)](https://codeclimate.com/github/DumbMachine/create-python-project/maintainability) [![Known Vulnerabilities](https://snyk.io/test/github/DumbMachine/create-python-project/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/DumbMachine/create-python-project?targetFile=requirements.txt)
@@ -204,3 +204,7 @@ Example_Repo
     - [ ] Django
     - [ ]
 - [ ] Add support to ignore .files and temp_*.py files for shizeles.
+
+
+
+[![HitCount](http://hits.dwyl.io/DumbMachine/projectpy.svg)](http://hits.dwyl.io/DumbMachine/projectpy) [![Downloads](https://pepy.tech/badge/projectpy)](https://pepy.tech/project/projectpy)
