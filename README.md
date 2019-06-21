@@ -118,7 +118,6 @@ Type "help", "copyright", "credits" or "license" for more information.
 🎉 Successfull Installation
 ```
 
-<<<<<<< HEAD
 # 🗒 TODO:
 
 - [ ] Add support for Logging.
@@ -141,7 +140,3 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 
 [![HitCount](http://hits.dwyl.io/DumbMachine/projectpy.svg)](http://hits.dwyl.io/DumbMachine/projectpy) [![Downloads](https://pepy.tech/badge/projectpy)](https://pepy.tech/project/projectpy)
-=======
-The message at the end "🎉 Successfull Installation " shows that the package was installed successfully.
-
->>>>>>> a7a5fde444576009d8dde0b4247da24a4896b924
