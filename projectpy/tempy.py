@@ -74,6 +74,7 @@ class Config:
         ('files', dict([
             ("license", 'unilicense'),
             ("git", True),
+            ("setup_py", True),
             ("color", True),
             ("requirements", True),
             ("tests", True),
@@ -82,8 +83,8 @@ class Config:
             ("interactive", False),
             ("manifest", False),
             ("setup_cfg", False),
-            ("setup_py", True),
             ("dockerfile", False),
+            ("conda", False),
             ("readme", 'markdown'),
         ])),
 

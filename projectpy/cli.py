@@ -11,6 +11,7 @@ import warnings
 from colorama import Fore, init
 
 from . import config, utils
+from .config import Config
 from .generator import generate_README
 from .writer import *
 
@@ -88,6 +89,9 @@ def initialize(args):
     '''
     conf = config.Config()
 
+    if args['interactive']:
+        return questions()
+
     if args['config']:
         print('CUSTOM\n')
 
@@ -159,52 +163,14 @@ def action_taker(args):
         # can not write there
         raise PermissionError('Do not have the permission to Write here.')
 
-        # else:
-        #     # file doesn't exist. No need to bring in deletion.
-        #     pass
-
     # ! Writing the files.
     if conf.options['config_location']:
         # Searching for the custom config thing.
         if not os.path.isfile(os.path.join(os.getcwd(), conf.options['config_location'])):
             raise FileNotFoundError(
                 f"Cant find the config file {os.path.join(os.getcwd(), conf.options['config_location'])}")
-    # print("The options chosen are as follows:")
-    # print(json.dumps(conf.options, sort_keys=True, indent=4))
+
     utils.writer_writer(conf)
-
-    # if conf.default:
-    #     for writes in conf.options['files'].keys():
-    #         if writes == 'license' and conf.options['files'][writes]:
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}', conf.options['files']['license'])
-
-    #         try:
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}')
-    #         except BaseException:
-    #             # warnings.warn('Some error occured, clearing the folder')
-    #             # shutil.rmtree(
-    #             #     os.path.join('.', conf.project_name)
-    #             # )
-    #             pass
-
-    #         if writes == 'setup_py':
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}', conf.options)
-
-    #         if writes == 'main':
-    #             conf.actions[writes](
-    #                 f'./{conf.project_name}', conf.options['project_name'])
-    # try:
-    # print(conf.options)
-    # generate_README(os.path.join(
-    #     '.', f'./{conf.project_name}'), shields=conf.options['shields'])
-
-    # print(conf.basic)
-    # except Exception as e:
-    # print(e)
-    # raise RuntimeError('There was a problem generating the README.md')
 
 
 def main():
@@ -217,22 +183,78 @@ def run_as_command():
 
 
 def questions():
+    conf = Config()
+    emojis = ['🚀', '✅', '🏠', '📘', '📦', '💡', '📝', '👤', '👤', '📃', '🗕', 'ℹ']
     answers = {}
     questions_to_ask = [
-        'Project Name:',
-        'Project Version:',
-        'Project Description:',
-        'Author Name:',
-        'Github Username:',
-        'License Type: ',
-        'Minimal Installation? (Y/N): ',
+        ['    Project Name:  ', '', 'project_name'],
+        ['    Project Version:  ', '0.01', 'project_version'],
+        ['    Project Description:  ', '', 'project_description'],
+        ['    Author Name:  ', '', 'author_name'],
+        ['    Github Username:  ', '', 'github_username'],
+        ['    License Type:   ', 'mit', 'license'],
+        ['    Minimal Installation? (Y/N):   ', '',
+         'default'],
 
-        'Custom Config Location [Leave empty if not present]:'
+        ['    Custom Config Location [Leave empty if not present]:  ',
+            'config.yaml', 'config_location'],
+        ['    Github Email:  ', '', 'author_email'],
+        ['    Git Repository (Y/n): ', '', 'git'],
+        ['    Contributing.md (Y/n): ', '',
+         'contributing'],
+        ['    Setup.cfg (Y/n): ', '', conf.options['files']['setup_cfg']],
+        ['    Tests folder (Y/n): ', 'yes', conf.options['files']['tests']],
+        ['    Conda feed stock (Y/n): ', '', conf.options['files']['conda']],
+        ['    Shields? (Y/n)  T: ', 'YES', emojis],
+
+        ['                    |-license  (Y/n): ',
+         'mit', ''],
+
+        ['                    |-Builds   (Y/n): ',
+         'appveyor', ''],
+
+        ['                    |-version  (Y/n): ',
+         'pypi', ''],
+
+        ['                    |-Issues   (Y/n): ',
+         'github-issues', ''],
+
+        ['                    |-PRs      (Y/n): ',
+         'github-pull-requests', ''],
     ]
-    for question in questions_to_ask:
-        answers[question] = str(input(question))
-
-    print(answers)
+    conf.options['default'] = False
+    for question, answer, something in questions_to_ask:
+        answers[question] = str(
+            utils.input_with_prefill(question, answer)).lower()
+        # something = answer
+        if [question, answer, something] in questions_to_ask[15:]:
+            conf.options['shields'].append(answers[question])
+        elif question == questions_to_ask[6][0] and answers[question] == 'y':
+            break
+        elif question == questions_to_ask[10][0] or question == questions_to_ask[9][0]:
+            conf.options['files'][something] = answers[question]
+        elif question == questions_to_ask[14][0]:
+            pass
+        else:
+            # try:
+            conf.options[something] = answers[question]
+            # except:
+            # raise Exception(f"{question}")
+    # print(json.dumps(answers, indent=2))
+    print(json.dumps(conf.options, indent=2))
+    print(
+        '''
+    ______________________________
+    |                            |
+    | Generation was successful  |
+    | -------------------------  |
+    | $ cd repo_name             |
+    | $ python setup.py install  |
+    ------------------------------
+'''
+    )
+    return conf
+# questions()
 
 
 def parser():

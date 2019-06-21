@@ -1,188 +1,121 @@
-# 🔴 THIS DOCUMENTATION IS WIP and will be completed soon.
-
 ![image](https://user-images.githubusercontent.com/23381512/58745622-a0c55000-8470-11e9-803d-98048a386ce9.png)
 
-# create-python-project
 
+[![HitCount](http://hits.dwyl.io/DumbMachine/projectpy.svg)](http://hits.dwyl.io/DumbMachine/projectpy)
+
+[![Downloads](https://pepy.tech/badge/projectpy)](https://pepy.tech/project/projectpy)
 [![Build status](https://ci.appveyor.com/api/projects/status/r73kob46x7rv690y?svg=true)](https://ci.appveyor.com/project/DumbMachine/create-python-project) [![Build Status](https://travis-ci.org/DumbMachine/ProjectPy.svg?branch=master)](https://travis-ci.org/DumbMachine/ProjectPy) [![Maintainability](https://api.codeclimate.com/v1/badges/3fa9da9a5e4e670d56bf/maintainability)](https://codeclimate.com/github/DumbMachine/create-python-project/maintainability) [![Known Vulnerabilities](https://snyk.io/test/github/DumbMachine/create-python-project/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/DumbMachine/create-python-project?targetFile=requirements.txt)
 
-A Simple **create-react-app**
-like CLI tool to create Python Project File Structure.
+## Getting Started:
 
-## Get Started Immediately:
+A Simple **create-react-app** like CLI tool to create Python Package File Structure.
 
-- Minimal worries about project structure.
-- Gives many options for customization.
+It offers the current features:
 
-# Installation:
+* Super Easy to use cli.
+* One Command installation for Simple Python Packages.
+* Customizable config for awesome Python Packages.
+* Minimal worries about project structure.
+* No dependencies.
 
-## Install from PYPI:
+## Installation
+
+### Install from PyPI:
 
 ```bash
 $ pip install projectpy
 ```
 
-## Install from Source:
+### Install from Source:
 
-- Clone this repository and install the package:
+* Clone this repository and install the package:
 
 ```bash
-$ git clone https://github.com/DumbMachine/create-python-project
-$ cd create-python-project
+$ git clone https://github.com/DumbMachine/ProjectPy
+$ cd projectpy
 $ python setup.py install
 ```
 
-# Usage:
+## Basic Usage
 
-## Minimal Installation:
-
-- This method is best for those who want to create a bare-bone simple Python Package, which is ready to _pip install_ and _uploading to PYPI_ .
-- Using the CLI:
+Creating a simple Python Package with default settings is as simple as:
 
 ```bash
-$ projectpy -n Example_Repo --config
-
+$ projectpy -n ExamplePackage
+---------------------------------------------------------------------------------------
 PROJECTPY: A Python CLI to create packages
-Percent: [----------------------->] 100: Copying file optional/.codec %
+Creating ExamplePackage with the following config:
 
-||            Option                ||            Choice                ||
---------------------------------------------------------------------------
-||         repo_name                ||      Example_Repo                ||
---------------------------------------------------------------------------
-||         license                  ||      unilicense                  ||
---------------------------------------------------------------------------
-||    cintergrations                ||          None                    ||
---------------------------------------------------------------------------
-||            config                ||          True                    ||
---------------------------------------------------------------------------
-||             color                ||          True                    ||
---------------------------------------------------------------------------
-||             clean                ||          False                   ||
---------------------------------------------------------------------------
-||               git                ||          False                   ||
---------------------------------------------------------------------------
+project_name: ExamplePackage
+project_version: 0.01
+project_description: "This is the default Placeholder description"
+author_name: "Placeholder:author_name"
+github_username: "Placeholder:github_username"
+github_email: "Placeholder:github_email"
 
-🌟 Done in 5 seconds.
-Success created Example_Repo in ~/Example_Repo
+license: "MIT"
+git: True
+color: True
+requirements: True
+readme: "markdown"
+contributing.md: True
+interactive: False
 
-Begin by doing the follwing:
-$ cd  Example_Repo
+shields:
+  build: "appveyor"
+  chat: "discord"
+  license: "github"
+  extras: "pypi---downloads"
+  
+🌟 Done in 3 seconds.
+✅ Success created Example_Repo in ~/Example_Repo
 
-To develop and work on the Package:
-$ python setup.py develop
-
-TO install the Package:
-$ python setup.py install
-
-👋 bai bai
+    ______________________________
+    |                            |
+    | Generation was successful  |
+    | -------------------------  |
+    | $ cd ExamplePackage        |
+    | $ python setup.py install  |
+    ------------------------------
+    
+👋 bai bai    
 ```
 
-- Installing the Example_Repo
+This will create a directory **ExampleDirectory** with the following Tree structure:
 
 ```bash
-$ cd Example_Repo
-$ python setup.py install
-```
-
-- The above will create the following Tree Structure in Example_Repo:
-
-```bash
-$ tree Example_Repo
-Example_Repo
-├── LICENSE
-├── Example_Repo
-│   ├── __init__.py
-│   └── temp.py
-├── README.md
-├── requirements.txt
-├── setup.cfg
-└── setup.py
-
-1 directory, **7** files
-```
-
-- To test the install, open the Python in any directory:
-
-```python
-In [1]: import Example_Repo
-Out[1]: The Installation was Sucessful.
-        For future information visit https://github.com/DumbMachine/create-python-project
-```
-
-- If you see the above then, your Installation was Successfull.
-
-## Custom Installation:
-
-- This is the recommended was of using this CLI.
-- This method will supply your package repo with files for Services like Testing, Continuous Integration with Travis/Tox/Jenkins.
-
-```
-$ projectpy -n Example_Repo --config -ci travis -git --license unilicense
-
-PROJECTPY: A Python CLI to create packages
-Percent: [----------------------->] 100: Copying file optional/.codec %
-
-||            Option                ||            Choice                ||
---------------------------------------------------------------------------
-||         repo_name                ||      Example_Repo                ||
---------------------------------------------------------------------------
-||         license                  ||      unilicense                  ||
---------------------------------------------------------------------------
-||    cintergrations                ||          Travis                  ||
---------------------------------------------------------------------------
-||            config                ||          True                    ||
---------------------------------------------------------------------------
-||             color                ||          True                    ||
---------------------------------------------------------------------------
-||             clean                ||          False                   ||
---------------------------------------------------------------------------
-||               git                ||          True                    ||
---------------------------------------------------------------------------
-
-🌟 Done in 5 seconds.
-Success created Example_Repo in ~/Example_Repo
-
-Begin by doing the follwing:
-$ cd  Example_Repo
-
-To develop and work on the Package:
-$ python setup.py develop
-
-TO install the Package:
-$ python setup.py install
-
-👋 bai bai
-```
-
-- Installing the Example_Repo
-
-```bash
-$ cd Example_Repo
-$ python setup.py install
-```
-
-- Tree:
-
-```bash
-$ tree Example_Repo
-Example_Repo
-├── appveyor.yml
-├── .codeclimate.yml
-├── .codecoveragerc
-├── dockerfile
-├── .gitignore
+$ tree ExamplePackage/
+----------------------------------------------------------------------------------------
+ExamplePackage
+├── contributing.md
+├── ExamplePackage
+    └── __init__.py
 ├── LICENSE
 ├── MANIFEST.ini
-├── Example_Repo
-│   ├── __init__.py
-│   └── temp.py
 ├── README.md
 ├── requirements.txt
-├── setup.cfg
 ├── setup.py
-└── .travis.yml
+└── tests
+    └── __init__.py
+```
 
-1 directory, 14 files
+{% hint style="success" %}
+The Package is now ready to be installed.
+{% endhint %}
+
+**To Install the package:**
+
+```bash
+$ cd ExamplePackage
+$ python setup.py install
+
+# To check the installation, try importing the installed package.
+$ python
+Python 3.7.3 (default, Mar 27 2019, 22:11:17) 
+[GCC 7.3.0] :: Anaconda, Inc. on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import ExamplePackage
+🎉 Successfull Installation
 ```
 
 # 🗒 TODO:
@@ -203,3 +136,7 @@ Example_Repo
     - [ ] Django
     - [ ]
 - [ ] Add support to ignore .files and temp_*.py files for shizeles.
+
+
+
+[![HitCount](http://hits.dwyl.io/DumbMachine/projectpy.svg)](http://hits.dwyl.io/DumbMachine/projectpy) [![Downloads](https://pepy.tech/badge/projectpy)](https://pepy.tech/project/projectpy)

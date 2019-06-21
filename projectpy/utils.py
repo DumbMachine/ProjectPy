@@ -129,8 +129,7 @@ def custom_reader(location):
             conf.options['files'][item] = thing[item]
         elif item == 'shields':
             for small_item in thing[item].keys():
-                conf.options['shields']['base'].append(small_item)
-                conf.options['shields']['entity'].append(
+                conf.options['shields'].append(
                     thing[item][small_item])
         else:
             # try:

@@ -1,67 +1,20 @@
 import json
 from datetime import datetime
-from .content import data
 import os
-d = data
+data = json.load(open('.data.json'))
 
 
-class Shields:
-    '''
-    Holds the Data for getting the Shields.
-    >>> print(Shields(base='chat', entity='discord').get_shield())
-    '''
-
-    def __init__(
-        self,
-        base='build',
-        entity='appveyor',
-        mode='markdown',
-        style='plastic'
-    ):
-        '''
-
-        '''
-
-        self.data = data
-        self.base = base
-        self.mode = mode
-        self.entity = entity
-        if style not in ['plastic', 'flat', 'flat-square', 'for-the-badge', 'poput', 'popout-square', 'social']:
-            raise ValueError(f"{style} is not Available")
-        self.style = style
-        # self.markdown = f"![{self.entity}]({})"
-        # self.rst = f".. image:: {}   :alt: {self.entity}"
-
-    def get_shield(self):
-        '''
-
-        '''
-        for item in d[self.base.lower()]['type']:
-            if self.entity == list(item.keys())[0]:
-                if self.mode == 'markdown':
-                    return f"![{self.entity}]({item[self.entity]}?style={self.style})"
-                else:
-                    return f".. image:: {item[self.entity]}   :alt: {self.entity}?style={self.style}"
-            else:  # * None case
-                return "shit"
-
-
-def get_shielder(base, entity, mode='markdown', style='flat'):
+def get_shielder(entity, mode='markdown', style='flat'):
     if style not in ['plastic', 'flat', 'flat-square', 'for-the-badge', 'poput', 'popout-square', 'social']:
         raise ValueError(f"{style} is not Available")
     else:
-        if base not in data.keys():
-            raise ValueError('This base is not in the dict')
+        if entity not in data.keys():
+            raise ValueError(f'This shield {entity} is not in the dict')
         else:
-            for types in data[base]['type']:
-                # print(types.keys())
-                # print(types)
-                if entity == list(types.keys())[0]:
-                    if mode == 'markdown':
-                        return f"![{entity}]({types[entity]}?style={style})"
-                    else:
-                        return f".. image:: {types[entity]}   :alt: {entity}?style={style}"
-
+            if mode == 'markdown':
+                return f"![{entity}]({data[entity]}?style={style})"
+            else:
+                return f".. image:: {data[entity]}   :alt: {entity}?style={style}"
     return ""
 
 
@@ -139,8 +92,7 @@ def code(language, content):
 def generate_README(location, shields):
     '''
     >>> shields = {
-            'base': ['chat', 'build'],
-            'entity': ['discord', 'appveyor']
+            ['discord', 'appveyor']
         }
     '''
     readme = open(os.path.join(location, 'README.md'), 'w+')
@@ -148,24 +100,26 @@ def generate_README(location, shields):
         title='REPO_NAME'
     ))
     if shields:
-        for count in range(len(shields['base'])):
-            if shields['base'][count] == 'custom':
+        for shield in shields:
+            if shield == 'custom':
+                # for count in range(len(shields['base'])):
+                # if shields['base'][count] == 'custom':
                 readme.write(customShield())
                 readme.write(" ")
             else:
-                if type(shields['entity'][count]) == list:
-                    for enty in shields['entity'][count]:
-                        readme.write(Shields(
-                            base=shields['base'][count], entity=enty).get_shield())
-                        readme.write(" ")
-                else:
-                    if shields['entity'][count]:
-                        # readme.write(Shields(
-                            # base=shields['base'][count], entity=shields['entity'][count]).get_shield())
-                        readme.write(get_shielder(
-                            base=shields['base'][count],
-                            entity=shields['entity'][count]))
-                        readme.write(" ")
+                # if
+                # if type(shields['entity'][count]) == list:
+                #     for enty in shields['entity'][count]:
+                #         readme.write(Shields(
+                #             base=shields['base'][count], entity=enty).get_shield())
+                #         readme.write(" ")
+                # else:
+                if shield:
+                    # readme.write(Shields(
+                    # base=shields['base'][count], entity=shields['entity'][count]).get_shield())
+                    readme.write(get_shielder(
+                        entity=shield))
+                    readme.write(" ")
 
     # readme.write(Shields(base='build', entity='appveyor').get_shield())
     readme.write("\n")
