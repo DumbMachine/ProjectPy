@@ -1,3 +1,4 @@
+Currently, I'm not working on this project. In its most basic form, it works. I might implement new features in the future considering things.
 ![image](https://user-images.githubusercontent.com/23381512/58745622-a0c55000-8470-11e9-803d-98048a386ce9.png)
 
 
@@ -66,7 +67,7 @@ shields:
   chat: "discord"
   license: "github"
   extras: "pypi---downloads"
-  
+
 🌟 Done in 3 seconds.
 ✅ Success created Example_Repo in ~/Example_Repo
 
@@ -77,8 +78,8 @@ shields:
     | $ cd ExamplePackage        |
     | $ python setup.py install  |
     ------------------------------
-    
-👋 bai bai    
+
+👋 bai bai
 ```
 
 This will create a directory **ExampleDirectory** with the following Tree structure:
@@ -111,7 +112,7 @@ $ python setup.py install
 
 # To check the installation, try importing the installed package.
 $ python
-Python 3.7.3 (default, Mar 27 2019, 22:11:17) 
+Python 3.7.3 (default, Mar 27 2019, 22:11:17)
 [GCC 7.3.0] :: Anaconda, Inc. on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import ExamplePackage
@@ -119,24 +120,6 @@ Type "help", "copyright", "credits" or "license" for more information.
 ```
 
 # 🗒 TODO:
-
-- [ ] Add support for Logging.
-- [ ] Improve the CLI ( Add more colors ).
-- [ ] Make examples for showing the thing.
-- [ ] Add support for Jenkins.
-- [ ] Check for COnda INstall Support.
-- [ ] Add Support for Black/isort.
-- [ ] Add support for Submodules.
-- [ ] Format years and shizz in the LICENSES.
-- [ ] Write up a function to generate Config template.
-- [ ] Add option for presets.
-  - [ ] Data Science/ Kaggle
-  - [ ] Web
-    - [ ] Flask
-    - [ ] Django
-    - [ ]
-- [ ] Add support to ignore .files and temp_*.py files for shizeles.
-
-
+- Many things, but currenlty they are not planned to be done anytime soon.
 
 [![HitCount](http://hits.dwyl.io/DumbMachine/projectpy.svg)](http://hits.dwyl.io/DumbMachine/projectpy) [![Downloads](https://pepy.tech/badge/projectpy)](https://pepy.tech/project/projectpy)
